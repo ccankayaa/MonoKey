@@ -1,0 +1,32 @@
+{
+  "name": "@monokey/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "build": "expo export --clear --platform android --output-dir dist/android && expo export --clear --platform ios --output-dir dist/ios",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "@monokey/contracts": "0.1.0",
+    "@monokey/crypto": "0.1.0",
+    "expo": "57.0.25",
+    "expo-apple-authentication": "57.0.2",
+    "expo-crypto": "57.0.3",
+    "expo-secure-store": "57.0.4",
+    "expo-sqlite": "57.0.3",
+    "firebase": "12.19.0",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.2"
+  }
+}

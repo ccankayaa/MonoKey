@@ -1,0 +1,165 @@
+name: Verify and deploy Test
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: monokey-test-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        postgres: ['15', '18']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}-alpine
+        env:
+          POSTGRES_DB: monokey_ci
+          POSTGRES_USER: monokey_ci
+          POSTGRES_PASSWORD: disposable-ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U monokey_ci -d monokey_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      MONOKEY_TEST_POSTGRES_CONNECTION_STRING: Host=localhost;Port=5432;Database=monokey_ci;Username=monokey_ci;Password=disposable-ci-only;SSL Mode=Disable;Include Error Detail=false
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-dotnet@e2cf7c663b93c38144629f5d40b62d3eaaa63a03
+        with:
+          dotnet-version: 10.0.401
+      - run: dotnet restore MonoKeyBackend.slnx
+      - run: dotnet format MonoKeyBackend.slnx --verify-no-changes --no-restore
+      - run: dotnet build MonoKeyBackend.slnx -c Release --no-restore
+      - run: dotnet test MonoKeyBackend.slnx -c Release --no-build --logger trx
+      - run: dotnet package list --project MonoKeyBackend.slnx --include-transitive --vulnerable --format json > dependency-audit.json
+      - run: python scripts/Check-MonoKeyDependencies.py dependency-audit.json
+      - run: python scripts/Scan-MonoKeySecrets.py
+      - if: matrix.postgres == '18'
+        run: |
+          dotnet publish backend/src/MonoKey.Api -c Release -o artifacts/api -p:Version=0.1.0 -p:InformationalVersion=${{ github.sha }}
+          dotnet publish backend/tools/MonoKey.DatabaseTasks -c Release -o artifacts/migration
+      - if: matrix.postgres == '18'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: test-api-${{ github.sha }}
+          path: artifacts/api
+          retention-days: 14
+      - if: matrix.postgres == '18'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: reviewed-migration-${{ github.sha }}
+          path: artifacts/migration
+          retention-days: 14
+  clients:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto
+      - run: npm run typecheck && npm run lint && npm test
+      - run: npm run build
+      - run: npm run build --workspace @monokey/mobile
+        env:
+          EXPO_NO_DOTENV: '1'
+          EXPO_PUBLIC_APP_ENV: dev
+      - run: npm audit --registry=https://registry.npmjs.org --json > npm-audit.json || test -s npm-audit.json
+      - run: python ../scripts/Check-MonoKeyDependencies.py npm-audit.json
+  migrate:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.TEST_API_DEPLOY_ENABLED == 'true'
+    needs: [backend, clients]
+    environment: Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-dotnet@e2cf7c663b93c38144629f5d40b62d3eaaa63a03
+        with:
+          dotnet-version: 10.0.401
+      - uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317
+        with:
+          name: reviewed-migration-${{ github.sha }}
+          path: artifacts/migration
+      - id: azure_login
+        uses: azure/login@487024fc392f1f60cc70bc8a48233c14bc1de77f
+        with:
+          client-id: ${{ vars.AZURE_TEST_MIGRATOR_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - shell: pwsh
+        run: ./scripts/Invoke-MonoKeyTestMigration.ps1 -MigrationAssembly artifacts/migration/MonoKey.DatabaseTasks.dll
+      - name: Always remove this runner firewall rule
+        if: always() && steps.azure_login.outcome == 'success'
+        shell: pwsh
+        run: ./scripts/Clear-MonoKeyMigrationFirewall.ps1
+  deploy-api:
+    needs: migrate
+    environment: Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-dotnet@e2cf7c663b93c38144629f5d40b62d3eaaa63a03
+        with:
+          dotnet-version: 10.0.401
+      - uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317
+        with:
+          name: test-api-${{ github.sha }}
+          path: artifacts/api
+      - uses: azure/login@487024fc392f1f60cc70bc8a48233c14bc1de77f
+        with:
+          client-id: ${{ vars.AZURE_TEST_DEPLOY_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/webapps-deploy@5d36cf207daf8ee0dc80922c05aa4cfaa1221af6
+        with:
+          app-name: monokey
+          package: artifacts/api
+      - shell: pwsh
+        run: ./scripts/Test-MonoKeyDeployment.ps1
+  deploy-web:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.TEST_WEB_DEPLOY_ENABLED == 'true'
+    needs: [backend, clients, deploy-api]
+    environment: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps
+    env:
+      VITE_API_BASE_URL: https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net
+      VITE_FIREBASE_PROJECT_ID: vaultx-1ee62
+      VITE_FIREBASE_API_KEY: ${{ vars.TEST_FIREBASE_API_KEY }}
+      VITE_FIREBASE_APP_ID: ${{ vars.TEST_FIREBASE_APP_ID }}
+      VITE_FIREBASE_AUTH_DOMAIN: vaultx-1ee62.firebaseapp.com
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts
+      - run: npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto && npm run build:test --workspace @monokey/web
+      - uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_TEST_SWA_DEPLOYMENT_TOKEN }}
+          action: upload
+          app_location: apps/web/dist
+          skip_app_build: true
+          skip_api_build: true
+          production_branch: main

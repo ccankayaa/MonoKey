@@ -1,0 +1,54 @@
+name: Manual signed Android test package
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: monokey-mobile-test
+  cancel-in-progress: false
+jobs:
+  android:
+    if: github.ref == 'refs/heads/main' && vars.TEST_MOBILE_BUILD_ENABLED == 'true'
+    environment: TestMobile
+    runs-on: ubuntu-latest
+    env:
+      EXPO_NO_DOTENV: '1'
+      EXPO_PUBLIC_APP_ENV: test
+      EXPO_PUBLIC_API_BASE_URL: https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net
+      EXPO_PUBLIC_FIREBASE_PROJECT_ID: vaultx-1ee62
+      EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN: vaultx-1ee62.firebaseapp.com
+      EXPO_PUBLIC_FIREBASE_API_KEY: ${{ vars.TEST_FIREBASE_API_KEY }}
+      EXPO_PUBLIC_FIREBASE_APP_ID: ${{ vars.TEST_FIREBASE_MOBILE_APP_ID }}
+      MONOKEY_ANDROID_PACKAGE: ${{ vars.TEST_ANDROID_PACKAGE }}
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
+        with:
+          distribution: temurin
+          java-version: '21'
+      - working-directory: apps
+        run: npm ci --ignore-scripts && npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto
+      - working-directory: apps/mobile
+        run: npx expo prebuild --platform android --no-install
+      - shell: pwsh
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.TEST_ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.TEST_ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ vars.TEST_ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.TEST_ANDROID_KEY_PASSWORD }}
+        run: ./scripts/Build-MonoKeyAndroid.ps1 -GenerateNative:$false
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: signed-test-apk
+          path: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 7
+      - if: vars.TEST_MOBILE_DISTRIBUTION_ENABLED == 'true'
+        env:
+          FIREBASE_DISTRIBUTION_CREDENTIAL_BASE64: ${{ secrets.FIREBASE_TEST_DISTRIBUTION_CREDENTIAL_BASE64 }}
+          FIREBASE_DISTRIBUTION_APP_ID: ${{ vars.TEST_FIREBASE_ANDROID_APP_ID }}
+          FIREBASE_DISTRIBUTION_GROUP: ${{ vars.TEST_FIREBASE_TESTER_GROUP }}
+        shell: pwsh
+        run: ./scripts/Distribute-MonoKeyAndroid.ps1

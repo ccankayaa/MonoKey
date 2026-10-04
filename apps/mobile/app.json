@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Mono Key",
+    "slug": "monokey",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "scheme": "monokey",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vaultx.app",
+      "usesAppleSignIn": false
+    },
+    "android": {
+      "package": "com.vaultx.app"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-sqlite"
+    ]
+  }
+}

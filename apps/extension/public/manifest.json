@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "MonoKey",
+  "version": "0.1.0",
+  "description": "User-initiated exact-origin credential filling for an encrypted MonoKey vault.",
+  "permissions": ["activeTab", "scripting", "storage", "idle"],
+  "action": { "default_popup": "popup.html", "default_title": "Open MonoKey" },
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'" }
+}

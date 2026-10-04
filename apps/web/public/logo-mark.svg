@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Logo / Mark" clip-path="url(#clip0_0_4)">
+<path id="Vector" d="M40 0H16C7.16344 0 0 7.16344 0 16V40C0 48.8366 7.16344 56 16 56H40C48.8366 56 56 48.8366 56 40V16C56 7.16344 48.8366 0 40 0Z" fill="#464FD8"/>
+<path id="Vector_2" d="M17 25.5C18.2 19.7 23.2 16 29 16C34.3 16 38.9 19.1 40.6 23.7" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+<path id="Vector_3" d="M37.5 18.5L41.2 23.8L34.9 25" stroke="white" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M39 30.5C37.8 36.3 32.8 40 27 40C21.7 40 17.1 36.9 15.4 32.3" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+<path id="Vector_5" d="M18.5 37.5L14.8 32.2L21.1 31" stroke="white" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_6" d="M28 33.5C31.0376 33.5 33.5 31.0376 33.5 28C33.5 24.9624 31.0376 22.5 28 22.5C24.9624 22.5 22.5 24.9624 22.5 28C22.5 31.0376 24.9624 33.5 28 33.5Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_0_4">
+<rect width="56" height="56" fill="white"/>
+</clipPath>
+</defs>
+</svg>

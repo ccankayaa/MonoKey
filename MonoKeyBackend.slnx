@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/backend/" />
+  <Folder Name="/backend/src/">
+    <Project Path="backend/src/MonoKey.Api/MonoKey.Api.csproj" />
+    <Project Path="backend/src/MonoKey.Application/MonoKey.Application.csproj" />
+    <Project Path="backend/src/MonoKey.Domain/MonoKey.Domain.csproj" />
+    <Project Path="backend/src/MonoKey.Infrastructure/MonoKey.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/backend/tests/">
+    <Project Path="backend/tests/MonoKey.IntegrationTests/MonoKey.IntegrationTests.csproj" />
+    <Project Path="backend/tests/MonoKey.UnitTests/MonoKey.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/backend/tools/">
+    <Project Path="backend/tools/MonoKey.DatabaseTasks/MonoKey.DatabaseTasks.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,25 @@
+{
+  "name": "@monokey/extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build --mode development",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run src",
+    "build:dev": "tsc --noEmit && vite build --mode development",
+    "build:test": "tsc --noEmit && vite build --mode staging",
+    "build:prod": "tsc --noEmit && vite build --mode production"
+  },
+  "dependencies": {
+    "@monokey/contracts": "0.1.0",
+    "@monokey/crypto": "0.1.0",
+    "firebase": "12.19.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.3.1",
+    "typescript": "6.0.3",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

@@ -1,0 +1,39 @@
+:root {
+  --ap-color-bg-canvas: #fcfcfa;
+  --ap-color-bg-surface: #ffffff;
+  --ap-color-bg-subtle: #eef1f6;
+  --ap-color-bg-brand: #4650d8;
+  --ap-color-bg-brand-subtle: #f2f3ff;
+  --ap-color-text-primary: #101828;
+  --ap-color-text-secondary: #475467;
+  --ap-color-text-muted: #667085;
+  --ap-color-text-brand: #3741b8;
+  --ap-color-border-default: #dde3ec;
+  --ap-color-success: #12805c;
+  --ap-color-warning: #b54708;
+  --ap-color-danger: #b42318;
+  --ap-color-teal: #15a38f;
+  --ap-shadow-card: 0 6px 16px -6px rgb(11 18 32 / 4%), 0 1px 2px rgb(11 18 32 / 6%);
+  --ap-radius-sm: 8px;
+  --ap-radius-md: 12px;
+  --ap-radius-xl: 20px;
+  --ap-focus: 0 0 0 3px rgb(70 80 216 / 25%);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --ap-color-bg-canvas: #0b0f19;
+  --ap-color-bg-surface: #151b2a;
+  --ap-color-bg-subtle: #1a2235;
+  --ap-color-bg-brand: #6366f1;
+  --ap-color-bg-brand-subtle: #242642;
+  --ap-color-text-primary: #f8fafc;
+  --ap-color-text-secondary: #cbd5e1;
+  --ap-color-text-muted: #94a3b8;
+  --ap-color-text-brand: #a5b4fc;
+  --ap-color-border-default: #344054;
+  --ap-color-success: #10b981;
+  --ap-color-warning: #f59e0b;
+  --ap-color-danger: #ef4444;
+  color-scheme: dark;
+}

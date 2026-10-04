@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: monokey-api-test
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: main
+    dockerfilePath: ./backend/src/MonoKey.Api/Dockerfile
+    dockerContext: .
+    autoDeployTrigger: off
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Staging
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
+      - key: Authentication__Firebase__ProjectId
+        sync: false
+      - key: Cors__AllowedOrigins__0
+        sync: false
+      - key: ConnectionStrings__MonoKeyDatabase
+        sync: false

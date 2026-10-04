@@ -1,0 +1,8 @@
+{
+  "reviewedOn": "2026-10-04",
+  "expiresOn": "2026-10-18",
+  "npmAdvisories": {
+    "GHSA-vfj7-8cjw-p6xm": "No patched braces release. Expo/Metro build tooling only; this app does not accept untrusted glob patterns. Keep audit warning visible; reevaluate before release.",
+    "GHSA-86w9-cpqp-85rv": "No patched node-forge release. Expo signing/tooling dependency, absent from browser/mobile application imports. No RSA verification in product code uses this library; reevaluate before signing/store release."
+  }
+}

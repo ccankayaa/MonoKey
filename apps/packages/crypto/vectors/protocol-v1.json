@@ -1,0 +1,15 @@
+{
+  "warning": "Public deterministic interoperability fixture; never use these keys or nonces for real data.",
+  "userId": "firebase-user-123",
+  "masterPassphrase": "correct horse battery staple",
+  "randomBytes": "00..97 hexadecimal, consumed sequentially",
+  "saltBase64": "AAECAwQFBgcICQoLDA0ODw==",
+  "masterWrapNonceBase64": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZn",
+  "masterWrappedKeyBase64": "C2NTqZqOGyUTOVDAyspnT+WHFCMflJpsea3fg4VocS8DtGXkUFq8DE7F1cFJiau2",
+  "recoveryCode": "MDEyMzQ1Njc4OTo7PD0-P0BBQkNERUZHSElKS0xNTk8",
+  "recoveryWrapNonceBase64": "aGlqa2xtbm9wcXJzdHV2d3h5ent8fX5/",
+  "recoveryWrappedKeyBase64": "IV1eFUpT4iuUQzw63kfRl3dy8L/hyrYpb7an0BHhGCytYQXJ/swRxaHQbZg42vLW",
+  "recordId": "0199f000-0000-7000-8000-000000000001",
+  "recordNonceBase64": "gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaX",
+  "recordCiphertextBase64": "rTCFKc7zknHo08xpO58zGaEs2hb49CpCgVPH5nZXRDpnVkECHOQ9cOWgzoHYd0Agwz92852LMh7/wcbeYo5nppZDr0XiCVlwdnZpJV4t9kNF7ejGk+GUEZRI8mSZIakyXNtV0YIEeaAbPCMIiUW3jjes4hXlJH81ioPymsktopFUmgK6CYCqlIn4h7813cr0kev5BDixYJUSBif5LSo/y+8S8Ieng+LbrSgzWFmqE7rNYr2mCt0DXtJ3gWxowOzFd4xF0sKVzl1DFrnOJ3lq0pQF3JGGb+jzawQbIJ0y"
+}

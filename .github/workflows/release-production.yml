@@ -1,0 +1,74 @@
+name: Manual production preflight
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: monokey-production
+  cancel-in-progress: false
+jobs:
+  preflight:
+    if: github.ref == 'refs/heads/main' && vars.PRODUCTION_READY == 'true'
+    environment: Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PROD_GROUP: ${{ vars.AZURE_PROD_RESOURCE_GROUP }}
+      PROD_APP: ${{ vars.AZURE_PROD_APP_NAME }}
+      PROD_CLIENT: ${{ vars.AZURE_PROD_DEPLOY_CLIENT_ID }}
+      TEST_CLIENT: ${{ vars.AZURE_TEST_DEPLOY_CLIENT_ID }}
+      PROD_DATABASE: ${{ vars.PROD_DATABASE_NAME }}
+      VITE_API_BASE_URL: https://api.monokeyapp.com
+      VITE_FIREBASE_PROJECT_ID: ${{ vars.PROD_FIREBASE_PROJECT_ID }}
+      VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.PROD_FIREBASE_AUTH_DOMAIN }}
+      VITE_FIREBASE_API_KEY: ${{ vars.PROD_FIREBASE_API_KEY }}
+      VITE_FIREBASE_APP_ID: ${{ vars.PROD_FIREBASE_APP_ID }}
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - name: Reject missing configuration and all test fallbacks
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          required=['PROD_GROUP','PROD_APP','PROD_CLIENT','PROD_DATABASE','VITE_FIREBASE_PROJECT_ID','VITE_FIREBASE_AUTH_DOMAIN','VITE_FIREBASE_API_KEY','VITE_FIREBASE_APP_ID']
+          assert all(os.environ.get(k) and '<' not in os.environ[k] for k in required), 'Production configuration is incomplete'
+          assert os.environ['PROD_GROUP'] != 'MonoKey' and os.environ['PROD_APP'] != 'monokey', 'Test resources rejected'
+          assert os.environ['PROD_DATABASE'] == 'monokey_prod', 'Production database required'
+          assert os.environ['PROD_CLIENT'] != os.environ['TEST_CLIENT'], 'Separate production identity required'
+          assert os.environ['VITE_FIREBASE_PROJECT_ID'] not in ['vaultx-1ee62','demo-monokey'], 'Separate production Firebase required'
+          assert os.environ['VITE_FIREBASE_AUTH_DOMAIN'] == os.environ['VITE_FIREBASE_PROJECT_ID']+'.firebaseapp.com', 'Production auth domain mismatch'
+          PY
+      - uses: azure/login@487024fc392f1f60cc70bc8a48233c14bc1de77f
+        with:
+          client-id: ${{ vars.AZURE_PROD_DEPLOY_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_PROD_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_PROD_SUBSCRIPTION_ID }}
+      - name: Verify existing production resources without modifying them
+        shell: bash
+        run: |
+          az webapp show --resource-group "$PROD_GROUP" --name "$PROD_APP" --query '{httpsOnly:httpsOnly,state:state}' -o json > resource-status.json
+          python - <<'PY'
+          import json
+          assert json.load(open('resource-status.json'))['httpsOnly'] is True, 'Production HTTPS required'
+          PY
+          az webapp config show --resource-group "$PROD_GROUP" --name "$PROD_APP" --query linuxFxVersion -o tsv | grep -Fx 'DOTNETCORE|10.0'
+      - uses: actions/setup-dotnet@e2cf7c663b93c38144629f5d40b62d3eaaa63a03
+        with:
+          dotnet-version: 10.0.401
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+      - run: dotnet restore MonoKeyBackend.slnx && dotnet format MonoKeyBackend.slnx --verify-no-changes --no-restore && dotnet build MonoKeyBackend.slnx -c Release --no-restore
+      - run: dotnet publish backend/src/MonoKey.Api -c Release -o artifacts/api -p:InformationalVersion=${{ github.sha }}
+      - working-directory: apps
+        run: npm ci --ignore-scripts && npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto && npm run build:prod --workspace @monokey/web
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: production-preflight-${{ github.sha }}
+          path: |
+            artifacts/api
+            apps/web/dist
+          retention-days: 7
+      - run: echo 'Preflight artifacts prepared. No production migration or deployment has been authorized or executed by this workflow.'

@@ -1,0 +1,13 @@
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/.env*
+.firebaserc
+firebase.generated.json
+.git
+.vs
+tmp
+*.pdf
+*.user
+*.suo

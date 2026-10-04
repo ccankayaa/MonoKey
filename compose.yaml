@@ -1,0 +1,25 @@
+name: monokey-local
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["local"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${MONOKEY_POSTGRES_DB:?Set MONOKEY_POSTGRES_DB in .env.local}
+      POSTGRES_USER: ${MONOKEY_POSTGRES_USER:?Set MONOKEY_POSTGRES_USER in .env.local}
+      POSTGRES_PASSWORD: ${MONOKEY_POSTGRES_PASSWORD:?Set MONOKEY_POSTGRES_PASSWORD in .env.local}
+    ports:
+      - "127.0.0.1:${MONOKEY_POSTGRES_PORT:-55432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+    volumes:
+      - vaultx-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  vaultx-postgres-data:
+    name: vaultx-local_vaultx-postgres-data
