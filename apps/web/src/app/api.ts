@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ApiError, MonoKeyApiClient, type Subscription, type SubscriptionInput } from "@monokey/contracts";
+import { ApiError, MonoKeyApiClient, type Subscription, type SubscriptionInput, type NotificationPreference, type NotificationPreferenceInput } from "@monokey/contracts";
 import { auth } from "./firebase";
 import { environment } from "./environment";
 
@@ -19,8 +19,16 @@ function normalizeError(error: unknown): { status: number | string; data: unknow
 export const monoKeyApi = createApi({
   reducerPath: "monoKeyApi",
   baseQuery: fakeBaseQuery<{ status: number | string; data: unknown }>(),
-  tagTypes: ["Subscriptions", "Summary", "Membership", "Profile", "VaultLinks"],
+  tagTypes: ["Subscriptions", "Summary", "Membership", "Profile", "VaultLinks", "Notifications"],
   endpoints: builder => ({
+    notificationPreference: builder.query({
+      async queryFn(_argument, queryApi) { try { return {data: await apiClient.getNotificationPreference(queryApi.signal)}; } catch(error) {return {error: normalizeError(error)};} },
+      providesTags: ["Notifications"],
+    }),
+    updateNotificationPreference: builder.mutation<NotificationPreference, NotificationPreferenceInput>({
+      async queryFn(input, queryApi) {try { return {data: await apiClient.updateNotificationPreference(input, queryApi.signal)}; } catch(error) {return {error: normalizeError(error)};} },
+      invalidatesTags: ["Notifications"],
+    }),
     vaultLinks: builder.query<Array<{vaultRecordId: string}>, string>({
       async queryFn(id, queryApi) {try {return {data: await apiClient.listVaultLinks(id,queryApi.signal)};} catch(error){return {error:normalizeError(error)};}},
       providesTags: ["VaultLinks"],
@@ -83,6 +91,8 @@ export const monoKeyApi = createApi({
 });
 
 export const {
+  useNotificationPreferenceQuery,
+  useUpdateNotificationPreferenceMutation,
   useVaultLinksQuery,
   useMembershipQuery,
   usePlansQuery,

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using MonoKey.Application.Common;
 using MonoKey.Application.Notifications;
 
 namespace MonoKey.Api.Controllers;
@@ -12,8 +13,11 @@ namespace MonoKey.Api.Controllers;
 public sealed class NotificationPreferencesController(INotificationPreferenceService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<NotificationPreferenceDto>> Get(CancellationToken cancellationToken) =>
-        Ok(await service.GetAsync(cancellationToken));
+    public async Task<ActionResult<NotificationPreferenceDto>> Get(CancellationToken cancellationToken)
+    {
+        try { return Ok(await service.GetAsync(cancellationToken)); }
+        catch (NotFoundException) { return NoContent(); }
+    }
 
     [HttpPut]
     public async Task<ActionResult<NotificationPreferenceDto>> Upsert(

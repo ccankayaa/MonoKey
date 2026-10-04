@@ -14,6 +14,9 @@ public sealed class AccountApiTests(MonoKeyWebApplicationFactory factory)
         using var client = factory.CreateClient();
         client.DefaultRequestHeaders.Add(TestAuthenticationHandler.UserHeader, $"account-{Guid.NewGuid()}");
 
+        using var absentPreference = await client.GetAsync("/api/notification-preferences", CancellationToken.None);
+        Assert.Equal(HttpStatusCode.NoContent, absentPreference.StatusCode);
+
         using var profileUpdate = await client.PutAsJsonAsync(
             "/api/profile",
             new { displayName = "MonoKey User" },
@@ -31,6 +34,16 @@ public sealed class AccountApiTests(MonoKeyWebApplicationFactory factory)
             "/api/notification-preferences",
             CancellationToken.None);
         Assert.Equal(HttpStatusCode.OK, preferenceGet.StatusCode);
+        using var preferenceDocument = JsonDocument.Parse(await preferenceGet.Content.ReadAsStringAsync(CancellationToken.None));
+        Assert.True(preferenceDocument.RootElement.GetProperty("renewalRemindersEnabled").GetBoolean());
+        Assert.Equal(7, preferenceDocument.RootElement.GetProperty("daysBeforeRenewal").GetInt32());
+        using var other = factory.CreateClient();
+        other.DefaultRequestHeaders.Add(TestAuthenticationHandler.UserHeader, $"account-{Guid.NewGuid()}");
+        using var otherPreference = await other.GetAsync("/api/notification-preferences", CancellationToken.None);
+        Assert.Equal(HttpStatusCode.NoContent, otherPreference.StatusCode);
+        using var invalidPreference = await client.PutAsJsonAsync("/api/notification-preferences",
+            new { renewalRemindersEnabled = true, daysBeforeRenewal = 366 }, CancellationToken.None);
+        Assert.Equal(HttpStatusCode.BadRequest, invalidPreference.StatusCode);
 
         using var deviceRegister = await client.PostAsJsonAsync(
             "/api/devices",

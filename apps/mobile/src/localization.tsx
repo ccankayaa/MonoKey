@@ -4,6 +4,15 @@ import * as SecureStore from "expo-secure-store";
 
 const messages = {
   en: {
+    renewalPreferences: "Renewal preferences",
+    renewalReminders: "Show renewal reminders",
+    daysBeforeRenewal: "Days before renewal (0–365)",
+    remindersDisabled: "Renewal reminders are off. View your subscriptions on the Subscriptions screen.",
+    renewalDefaults: "No preference has been saved yet. The default view is 7 days.",
+    saved: "Saved.",
+    retry: "Retry",
+    errorGeneric: "The operation could not be completed. Try again.",
+    notificationsLocal: "This list uses renewal dates and your preferences. Push notifications are not sent.",
     currency: "Currency",
     renewal: "Renewal (YYYY-MM-DD)",
     interval: "Interval",
@@ -51,6 +60,15 @@ const messages = {
     edit: "Edit", delete: "Delete", cancel: "Cancel", deleteConfirm: "Delete this encrypted record?",
   },
   tr: {
+    renewalPreferences: "Yenileme tercihleri",
+    renewalReminders: "Yenileme uyarılarını göster",
+    daysBeforeRenewal: "Yenilenmeden kaç gün önce (0–365)",
+    remindersDisabled: "Yenileme uyarıları kapalı. Aboneliklerinizi Abonelikler ekranında görebilirsiniz.",
+    renewalDefaults: "Henüz kaydedilmiş tercih yok. Varsayılan görünüm 7 gündür.",
+    saved: "Kaydedildi.",
+    retry: "Tekrar dene",
+    errorGeneric: "İşlem tamamlanamadı. Tekrar deneyin.",
+    notificationsLocal: "Bu liste yenilenme tarihlerinden ve tercihlerinizden hesaplanır. Push bildirimi gönderilmez.",
     currency: "Para birimi",
     renewal: "Yenilenme (YYYY-AA-GG)",
     interval: "Dönem",

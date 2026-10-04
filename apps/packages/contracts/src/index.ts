@@ -48,6 +48,17 @@ export interface CostSummary {
   yearlyCost: number;
 }
 
+export interface NotificationPreferenceInput {
+  renewalRemindersEnabled: boolean;
+  daysBeforeRenewal: number;
+}
+
+export interface NotificationPreference extends NotificationPreferenceInput {
+  id: string;
+  createdAtUtc: string;
+  updatedAtUtc: string;
+}
+
 export interface VaultKeyEnvelope {
   formatVersion: 1;
   kdfAlgorithm: "argon2id";
@@ -164,6 +175,12 @@ export class MonoKeyApiClient {
   public createCheckout(signal?: AbortSignal): Promise<{url: string}> { return this.request("/api/membership/checkout", { method: "POST", signal }); }
   public async getProfile(signal?: AbortSignal): Promise<{displayName: string | null}> { return await this.request<{displayName: string | null} | undefined>("/api/profile", { signal }) ?? {displayName: null}; }
   public updateProfile(displayName: string, signal?: AbortSignal): Promise<{displayName: string | null}> { return this.request("/api/profile", {method: "PUT", body: {displayName}, signal}); }
+  public async getNotificationPreference(signal?: AbortSignal): Promise<NotificationPreference | null> {
+    return await this.request<NotificationPreference | undefined>("/api/notification-preferences", {signal}) ?? null;
+  }
+  public updateNotificationPreference(input: NotificationPreferenceInput, signal?: AbortSignal): Promise<NotificationPreference> {
+    return this.request("/api/notification-preferences", {method: "PUT", body: {renewalRemindersEnabled: input.renewalRemindersEnabled, daysBeforeRenewal: input.daysBeforeRenewal}, signal});
+  }
   public listVaultLinks(subscriptionId: string, signal?: AbortSignal): Promise<Array<{vaultRecordId: string}>> { return this.request(`/api/subscriptions/${subscriptionId}/vault-links`, { signal }); }
   public linkVaultRecord(subscription: Subscription, record: EncryptedVaultRecord, signal?: AbortSignal): Promise<void> {
     return this.request(`/api/subscriptions/${subscription.id}/vault-links/${record.id}`, { method: "PUT", body: {subscriptionConcurrencyToken: subscription.concurrencyToken, recordRevision: record.revision}, signal });

@@ -1,5 +1,10 @@
 export const messages = {
   tr: {
+    renewalPreferences: "Yenileme tercihleri",
+    renewalReminders: "Yenileme uyarılarını göster",
+    daysBeforeRenewal: "Yenilenmeden kaç gün önce (0–365)",
+    remindersDisabled: "Yenileme uyarıları kapalı. Aboneliklerinizi Abonelikler ekranında görebilirsiniz.",
+    renewalDefaults: "Henüz kaydedilmiş tercih yok. Varsayılan görünüm 7 gündür.",
     resetSent: "Hesap uygunsa parola sıfırlama bağlantısı gönderildi.",
     exportVault: "Kasayı dışa aktar (açık metin dosyası)",
     membership: "Üyelik",
@@ -16,7 +21,7 @@ export const messages = {
     greeting: "Hoş geldin",
     account: "Hesap",
     vaultEncrypted: "Parola kasanız uçtan uca şifrelenir.",
-    sessionPolicy: "Kasa, 5 dakika i?lem yap?lmad???nda veya sekme arka plana ge?ti?inde kilitlenir. Giri? oturumu Firebase taraf?ndan y?netilir.",
+    sessionPolicy: "Kasa, 5 dakika işlem yapılmadığında veya sekme arka plana geçtiğinde kilitlenir. Giriş oturumu Firebase tarafından yönetilir.",
     notificationsLocal: "Bu liste yenilenme tarihlerinden hesaplanır. Push bildirimi gönderilmez.",
     noRenewals: "Yaklaşan ödeme yok.",
     currencySeparate: "Para birimleri ayrı hesaplanır.",
@@ -89,6 +94,11 @@ export const messages = {
     fatalError: "Beklenmeyen bir hata oluştu. Uygulamayı yeniden yükleyin.", reload: "Yeniden yükle",
   },
   en: {
+    renewalPreferences: "Renewal preferences",
+    renewalReminders: "Show renewal reminders",
+    daysBeforeRenewal: "Days before renewal (0–365)",
+    remindersDisabled: "Renewal reminders are off. View your subscriptions on the Subscriptions screen.",
+    renewalDefaults: "No preference has been saved yet. The default view is 7 days.",
     resetSent: "A password reset link was sent if the account is eligible.",
     exportVault: "Export vault (plaintext file)",
     membership: "Membership",
