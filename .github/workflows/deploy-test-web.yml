@@ -1,0 +1,47 @@
+name: Deploy TEST web
+on:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: monokey-test-web
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && vars.TEST_WEB_DEPLOY_ENABLED == 'true'
+    environment: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps
+    env:
+      VITE_API_BASE_URL: https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net
+      VITE_FIREBASE_PROJECT_ID: vaultx-1ee62
+      VITE_FIREBASE_API_KEY: ${{ vars.TEST_FIREBASE_API_KEY }}
+      VITE_FIREBASE_APP_ID: ${{ vars.TEST_FIREBASE_APP_ID }}
+      VITE_FIREBASE_AUTH_DOMAIN: vaultx-1ee62.firebaseapp.com
+      TEST_WEB_ORIGIN: ${{ vars.TEST_WEB_ORIGIN }}
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto && npm run build:test --workspace @monokey/web
+      - name: Record the public build identity
+        run: node -e "require('node:fs').writeFileSync('web/dist/build-version.json', JSON.stringify({commit:process.env.GITHUB_SHA,environment:'test'}))"
+      - name: Publish the staging bundle to the primary TEST site
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_TEST_SWA_DEPLOYMENT_TOKEN }}
+          action: upload
+          app_location: apps/web/dist
+          skip_app_build: true
+          skip_api_build: true
+          production_branch: main
+      - name: Verify live web routes, build and CORS
+        shell: pwsh
+        run: ../scripts/Test-MonoKeyWebDeployment.ps1
