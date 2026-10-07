@@ -40,7 +40,7 @@ jobs:
           assert os.environ['VITE_FIREBASE_PROJECT_ID'] not in ['vaultx-1ee62','demo-monokey'], 'Separate production Firebase required'
           assert os.environ['VITE_FIREBASE_AUTH_DOMAIN'] == os.environ['VITE_FIREBASE_PROJECT_ID']+'.firebaseapp.com', 'Production auth domain mismatch'
           PY
-      - uses: azure/login@487024fc392f1f60cc70bc8a48233c14bc1de77f
+      - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6
         with:
           client-id: ${{ vars.AZURE_PROD_DEPLOY_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_PROD_TENANT_ID }}
