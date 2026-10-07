@@ -38,6 +38,7 @@ jobs:
       - working-directory: apps/mobile
         run: npx expo prebuild --platform android --no-install
       - shell: pwsh
+        id: native_build
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.TEST_ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.TEST_ANDROID_KEYSTORE_PASSWORD }}
@@ -48,6 +49,7 @@ jobs:
         shell: pwsh
         run: ./scripts/Test-MonoKeyAndroidPackage.ps1
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always() && steps.native_build.outcome == 'success'
         with:
           name: signed-test-apk
           path: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
@@ -79,6 +81,7 @@ jobs:
       EXPO_PUBLIC_FIREBASE_API_KEY: ${{ vars.TEST_FIREBASE_API_KEY }}
       EXPO_PUBLIC_FIREBASE_APP_ID: ${{ vars.TEST_FIREBASE_IOS_APP_ID }}
       MONOKEY_IOS_BUNDLE_ID: ${{ vars.TEST_IOS_BUNDLE_ID }}
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
       - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9

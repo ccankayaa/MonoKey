@@ -6,9 +6,11 @@ if (-not $sdk) { throw 'Android SDK is unavailable.' }
 $toolDirectory = Get-ChildItem -LiteralPath (Join-Path $sdk 'build-tools') -Directory | Where-Object { $_.Name -match '^\d+\.\d+\.\d+$' } | Sort-Object { [version]$_.Name } -Descending | Select-Object -First 1
 if (-not $toolDirectory) { throw 'Android package verification tools are unavailable.' }
 $signer = Join-Path $toolDirectory.FullName $(if ($env:OS -eq 'Windows_NT') { 'apksigner.bat' } else { 'apksigner' })
-$signed = & $signer verify --verbose --print-certs $ApkPath
+$signed = @(& $signer verify --verbose --print-certs $ApkPath 2>&1)
 if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
-$digest = ($signed | Select-String '^Signer #1 certificate SHA-256 digest: (.+)$' | Select-Object -First 1).Matches.Groups[1].Value
+$certificate = [regex]::Match(($signed -join "`n"), '(?im)^\s*Signer #1 certificate SHA-256 digest:\s*([a-f0-9:]{64,95})\s*$')
+if (-not $certificate.Success) { throw 'APK signing certificate fingerprint could not be read.' }
+$digest = $certificate.Groups[1].Value
 if (($digest -replace ':','').Trim() -ne ($env:TEST_ANDROID_CERT_SHA256 -replace ':','').Trim()) { throw 'APK signing identity does not match the protected TEST key.' }
 $aapt = Join-Path $toolDirectory.FullName $(if ($env:OS -eq 'Windows_NT') { 'aapt2.exe' } else { 'aapt2' })
 $metadata = & $aapt dump badging $ApkPath

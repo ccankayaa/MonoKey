@@ -13,8 +13,20 @@ try {
     }
     if ([string]::IsNullOrWhiteSpace($env:GOOGLE_APPLICATION_CREDENTIALS) -or -not (Test-Path -LiteralPath $env:GOOGLE_APPLICATION_CREDENTIALS)) { throw 'Protected Google workload federation credentials are required.' }
     $env:GOOGLE_CLOUD_QUOTA_PROJECT = 'vaultx-1ee62'
-    & npx --yes firebase-tools@14.22.0 appdistribution:distribute $ApkPath --project vaultx-1ee62 --app $env:FIREBASE_DISTRIBUTION_APP_ID --groups $env:FIREBASE_DISTRIBUTION_GROUP --non-interactive
+    $resultText = (& npx --yes firebase-tools@14.22.0 appdistribution:distribute $ApkPath --project vaultx-1ee62 --app $env:FIREBASE_DISTRIBUTION_APP_ID --groups $env:FIREBASE_DISTRIBUTION_GROUP --non-interactive --json 2>&1 | Out-String)
     if ($LASTEXITCODE -ne 0) { throw 'Authorized Firebase test distribution failed.' }
+    $jsonStart = $resultText.IndexOf('{')
+    if ($jsonStart -lt 0) { throw 'Firebase distribution did not return a structured result.' }
+    $result = $resultText.Substring($jsonStart) | ConvertFrom-Json
+    if ($result.status -ne 'success') { throw 'Firebase distribution did not complete.' }
+    # The CLI also returns a signed binary URL; keep that credential out of logs.
+    $testerUrl = $result.result.testingUri
+    if ($testerUrl) {
+        $uri = [Uri]$testerUrl
+        if ($uri.Scheme -ne 'https' -or $uri.Host -ne 'appdistribution.firebase.google.com') { throw 'Unexpected tester URL.' }
+        Write-Host ('Authorized tester page: ' + $uri.GetLeftPart([UriPartial]::Path))
+    }
+    Write-Host 'Signed TEST Android release uploaded and distributed to the authorized tester group.'
 } finally {
     $env:GOOGLE_APPLICATION_CREDENTIALS = $originalCredential
     $env:GOOGLE_CLOUD_QUOTA_PROJECT = $originalQuotaProject
