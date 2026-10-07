@@ -132,6 +132,7 @@ jobs:
         with:
           app-name: monokey
           package: artifacts/api
+          startup-command: dotnet MonoKey.Api.dll
       - shell: pwsh
         run: ./scripts/Test-MonoKeyDeployment.ps1
   deploy-web:
