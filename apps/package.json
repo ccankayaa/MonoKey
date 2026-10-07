@@ -21,6 +21,8 @@
   },
   "overrides": {
     "uuid": "$uuid",
-    "@grpc/grpc-js": "1.14.5"
+    "@grpc/grpc-js": "1.14.5",
+    "shell-quote": "1.12.0",
+    "source-map-js": "1.2.2"
   }
 }
