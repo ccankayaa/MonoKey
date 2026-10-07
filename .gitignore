@@ -528,3 +528,4 @@ apps/packages/**/node_modules/
 apps/mobile/android/
 apps/mobile/ios/
 *.crt
+gha-creds-*.json
