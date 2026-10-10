@@ -1,13 +1,14 @@
 {
   "cli": {
-    "version": "16.28.0"
+    "version": ">=16.28.0"
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_APP_ENV": "dev"
+        "EXPO_PUBLIC_APP_ENV": "dev",
+        "MONOKEY_IOS_AUTOFILL_EXTENSION": "false"
       },
       "android": {
         "buildType": "apk"
