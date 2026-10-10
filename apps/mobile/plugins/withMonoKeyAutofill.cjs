@@ -19,6 +19,8 @@ function withMonoKeyAutofill(config) {
   fs.writeFileSync(path.join(folder,'MonoKeyAutofillActivity.kt'),`package ${packageName}\nimport android.os.Bundle\nimport android.view.WindowManager\nclass MonoKeyAutofillActivity : MainActivity() {\n override fun onCreate(savedInstanceState: Bundle?) {\n  window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,WindowManager.LayoutParams.FLAG_SECURE)\n  super.onCreate(savedInstanceState)\n }\n}\n`);
   return c;
  }]);
+ // Personal Team basic device preview cannot provision App Groups / credential-provider entitlements.
+ if(process.env.MONOKEY_IOS_AUTOFILL_EXTENSION === "false") return config;
  config=withInfoPlist(config,c=>{Object.assign(c.modResults,{MonoKeyAutofillGroup:group,MonoKeyAutofillNamespace:namespace});return c;});
  config=withEntitlementsPlist(config,c=>{c.modResults['com.apple.security.application-groups']=[...new Set([...(c.modResults['com.apple.security.application-groups']??[]),group])];return c;});
  config=withXcodeProject(config,c=>{
