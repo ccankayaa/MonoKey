@@ -15,9 +15,9 @@ try {
     $env:GOOGLE_CLOUD_QUOTA_PROJECT = 'vaultx-1ee62'
     $resultText = (& npx --yes firebase-tools@14.22.0 appdistribution:distribute $ApkPath --project vaultx-1ee62 --app $env:FIREBASE_DISTRIBUTION_APP_ID --groups $env:FIREBASE_DISTRIBUTION_GROUP --non-interactive --json 2>&1 | Out-String)
     if ($LASTEXITCODE -ne 0) { throw 'Authorized Firebase test distribution failed.' }
-    $jsonStart = $resultText.IndexOf('{')
-    if ($jsonStart -lt 0) { throw 'Firebase distribution did not return a structured result.' }
-    $result = $resultText.Substring($jsonStart) | ConvertFrom-Json
+    $jsonStart = [regex]::Match($resultText, '(?m)^\s*\{\s*\r?\n\s*"status"\s*:')
+    if (-not $jsonStart.Success) { throw 'Firebase distribution did not return a structured result.' }
+    $result = $resultText.Substring($jsonStart.Index) | ConvertFrom-Json
     if ($result.status -ne 'success') { throw 'Firebase distribution did not complete.' }
     # The CLI also returns a signed binary URL; keep that credential out of logs.
     $testerUrl = $result.result.testingUri
