@@ -9,7 +9,10 @@ $signer = Join-Path $toolDirectory.FullName $(if ($env:OS -eq 'Windows_NT') { 'a
 $signed = @(& $signer verify --verbose --print-certs $ApkPath 2>&1)
 if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
 $certificate = [regex]::Match(($signed -join "`n"), '(?im)^\s*Signer #1 certificate SHA-256 digest:\s*([a-f0-9:]{64,95})\s*$')
-if (-not $certificate.Success) { throw 'APK signing certificate fingerprint could not be read.' }
+if (-not $certificate.Success) {
+    $signed | Where-Object { $_ -match '(?i)signer|sha-?256|verifi|certificate' } | ForEach-Object { Write-Host ([string]$_) }
+    throw 'APK signing certificate fingerprint could not be read.'
+}
 $digest = $certificate.Groups[1].Value
 if (($digest -replace ':','').Trim() -ne ($env:TEST_ANDROID_CERT_SHA256 -replace ':','').Trim()) { throw 'APK signing identity does not match the protected TEST key.' }
 $aapt = Join-Path $toolDirectory.FullName $(if ($env:OS -eq 'Windows_NT') { 'aapt2.exe' } else { 'aapt2' })

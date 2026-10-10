@@ -1,0 +1,20 @@
+{
+  "packageVersion": "57.1.1",
+  "upstream": "https://github.com/expo/expo/pull/51040",
+  "commit": "6a84583f01acfd95ceafe52552c0cf9391de96dd",
+  "adaptation": "Factory/Sendable fix backported to the locked 57.1.1 writeJSIValue API; no unrelated runtime changes.",
+  "files": {
+    "apple/Sources/ExpoModulesJSI-Cxx/include/RuntimeScheduler.h": {
+      "before": "ab3e6488b7e527210ecc1c8c58318c1e0ac5db3a489ddcc8ed5a11eaf6f7e5fb",
+      "after": "208241aeccd17dbcf40aa572a551effc6cb76f2a1025ed6e6ecbb278744c6c1c"
+    },
+    "apple/Sources/ExpoModulesJSI/Runtime/JavaScriptRuntime.swift": {
+      "before": "c13e50450d2efe6b8dc8c243b44cb13341331cca188ebea96fed308b5547d9dc",
+      "after": "9b2da794a3767c7975a636ad120ea492a5adc6ef08d2e0de0090d2aac7a82f0e"
+    },
+    "apple/Sources/ExpoModulesJSI/Utilities/UncheckedSendable.swift": {
+      "before": null,
+      "after": "9fd6243dafadce81688bc40845812265ce97a429f3120068bfe817181e64f766"
+    }
+  }
+}

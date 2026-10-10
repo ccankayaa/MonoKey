@@ -1,6 +1,16 @@
 name: Manual TEST mobile packages
 on:
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Native package to build
+        type: choice
+        options: [all, android, ios-simulator]
+        default: all
+      android_artifact_run_id:
+        description: Optional existing signed-test-apk run ID for verification and redistribution
+        type: string
+        default: ''
 permissions:
   contents: read
 concurrency:
@@ -8,12 +18,13 @@ concurrency:
   cancel-in-progress: false
 jobs:
   android:
-    if: github.ref == 'refs/heads/main' && vars.TEST_MOBILE_BUILD_ENABLED == 'true'
+    if: github.ref == 'refs/heads/main' && vars.TEST_MOBILE_BUILD_ENABLED == 'true' && inputs.platform != 'ios-simulator'
     environment: TestMobile
     runs-on: ubuntu-24.04
     permissions:
       contents: read
       id-token: write
+      actions: read
     env:
       EXPO_NO_DOTENV: '1'
       EXPO_PUBLIC_APP_ENV: test
@@ -34,17 +45,34 @@ jobs:
           distribution: temurin
           java-version: '21'
       - working-directory: apps
+        if: inputs.android_artifact_run_id == ''
         run: npm ci --ignore-scripts && npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto
       - working-directory: apps/mobile
+        if: inputs.android_artifact_run_id == ''
         run: npx expo prebuild --platform android --no-install
       - shell: pwsh
         id: native_build
+        if: inputs.android_artifact_run_id == ''
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.TEST_ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.TEST_ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ vars.TEST_ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.TEST_ANDROID_KEY_PASSWORD }}
         run: ./scripts/Build-MonoKeyAndroid.ps1 -GenerateNative:$false
+      - name: Validate an explicitly selected existing native artifact
+        if: inputs.android_artifact_run_id != ''
+        shell: pwsh
+        env:
+          ARTIFACT_RUN_ID: ${{ inputs.android_artifact_run_id }}
+        run: |
+          if ($env:ARTIFACT_RUN_ID -notmatch '^\d+$') { throw 'A numeric workflow run ID is required.' }
+      - uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317
+        if: inputs.android_artifact_run_id != ''
+        with:
+          name: signed-test-apk
+          path: apps/mobile/android/app/build/outputs/apk/release
+          run-id: ${{ inputs.android_artifact_run_id }}
+          github-token: ${{ github.token }}
       - name: Verify the signed native package
         shell: pwsh
         run: ./scripts/Test-MonoKeyAndroidPackage.ps1
@@ -69,7 +97,7 @@ jobs:
         shell: pwsh
         run: ./scripts/Distribute-MonoKeyAndroid.ps1
   ios-simulator:
-    if: github.ref == 'refs/heads/main' && vars.TEST_IOS_SIMULATOR_BUILD_ENABLED == 'true'
+    if: github.ref == 'refs/heads/main' && vars.TEST_IOS_SIMULATOR_BUILD_ENABLED == 'true' && inputs.platform != 'android'
     environment: TestMobile
     runs-on: macos-15
     env:
@@ -91,6 +119,8 @@ jobs:
           cache-dependency-path: apps/package-lock.json
       - working-directory: apps
         run: npm ci --ignore-scripts && npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto
+      - name: Apply the reviewed Expo Swift compatibility backport
+        run: node scripts/Apply-MonoKeyExpoIosCompatibility.mjs
       - name: Compile the native iOS simulator application
         shell: pwsh
         run: ./scripts/Build-MonoKeyIosSimulator.ps1
