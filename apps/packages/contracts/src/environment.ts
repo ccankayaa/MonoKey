@@ -38,6 +38,8 @@ export function parseEnvironment(input: PublicEnvironmentInput): PublicEnvironme
   const authDomain = input.firebaseAuthDomain || (local ? "localhost" : "");
   if (!local && authDomain !== `${projectId}.firebaseapp.com`) throw new Error("Firebase auth domain must belong to the configured identity project.");
   if (!apiKey || !appId || !authDomain || [apiKey,appId,authDomain,projectId].some(value => /<|>|REPLACE|placeholder/i.test(value))) throw new Error("Firebase public client configuration is incomplete.");
+  if (!local && (!/^AIza[A-Za-z0-9_-]{35}$/.test(apiKey) || !/^1:[0-9]+:(web|android|ios):[a-f0-9]+$/.test(appId))) throw new Error("Firebase public API key and app ID must be copied from the configured project's app settings; example values are rejected.");
+  if (environment === "test" && !appId.startsWith("1:1054617929710:")) throw new Error("Firebase TEST app ID belongs to a different project number.");
   const authEmulatorUrl = local ? input.authEmulatorUrl || "http://localhost:9099" : null;
   if (!local && input.authEmulatorUrl) throw new Error("Remote builds cannot use the Auth Emulator.");
   if (authEmulatorUrl) {

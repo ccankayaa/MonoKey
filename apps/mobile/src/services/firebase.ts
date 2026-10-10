@@ -11,7 +11,7 @@ const app = getApps().length > 0 ? getApp() : initializeApp(environment.firebase
 export const auth = getAuth(app);
 if (environment.authEmulatorUrl) connectAuthEmulator(auth, environment.authEmulatorUrl);
 
-export async function signInWithApple(): Promise<void> {
+export async function nativeAppleCredential() {
   const rawNonce = crypto.randomUUID().replaceAll("-", "");
   const nonce = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, rawNonce);
   const response = await AppleAuthentication.signInAsync({
@@ -20,5 +20,7 @@ export async function signInWithApple(): Promise<void> {
   });
   if (!response.identityToken) throw new Error("Apple did not return an identity token.");
   const credential = new OAuthProvider("apple.com").credential({ idToken: response.identityToken, rawNonce });
-  await signInWithCredential(auth, credential);
+  return credential;
 }
+
+export async function signInWithApple(): Promise<void> { await signInWithCredential(auth,await nativeAppleCredential()); }

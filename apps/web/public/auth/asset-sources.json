@@ -2,11 +2,17 @@
   "google": {
     "source": "https://developers.google.com/static/identity/images/signin-assets.zip",
     "terms": "https://developers.google.com/identity/branding-guidelines",
-    "usage": "Unmodified pre-approved sign-in icon, used only on Google sign-in controls."
+    "usage": "Unmodified pre-approved sign-in icon, used only on Google sign-in controls.",
+    "logoSource": "https://developers.google.com/static/identity/images/g-logo.png"
   },
   "apple": {
     "source": "https://appleid.cdn-apple.com/appleid/button",
     "terms": "https://developer.apple.com/design/human-interface-guidelines/sign-in-with-apple",
     "usage": "Official generated localized sign-in button, used only for Apple sign-in."
+  },
+  "googleFont": {
+    "source": "https://github.com/googlefonts/googlesans",
+    "license": "SIL Open Font License 1.1",
+    "distribution": "Locally packaged official Google Fonts files; no runtime third-party font request"
   }
 }

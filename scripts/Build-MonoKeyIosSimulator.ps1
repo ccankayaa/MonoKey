@@ -5,6 +5,8 @@ $root = Split-Path $PSScriptRoot -Parent
 Push-Location (Join-Path $root 'apps/mobile')
 try {
     $env:EXPO_NO_DOTENV = '1'
+    & node (Join-Path $root "scripts/Build-MonoKeyCredentialExtension.mjs")
+    if ($LASTEXITCODE -ne 0) { throw "Credential extension bundle failed." }
     & npx expo prebuild --platform ios --no-install
     if ($LASTEXITCODE -ne 0) { throw 'iOS native generation failed.' }
     & pod install --project-directory=ios

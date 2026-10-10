@@ -1,4 +1,5 @@
-﻿import { useRef, useState, type FormEvent } from "react";
+import { PasswordGenerator } from "../../components/PasswordGenerator";
+import { useRef, useState, type FormEvent } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { authenticationMessage, normalizeLoginEmail, safeAuthCode, type AuthOperation } from "@monokey/contracts";
 import { appleProvider, auth, firebaseConfigured, googleProvider } from "../../app/firebase";
@@ -47,13 +48,14 @@ export function AuthPage() {
     <form className="form" noValidate onSubmit={reset ? sendReset : submit}>
       <div className="field"><label htmlFor="email">{t("email")}</label><input id="email" type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} required /></div>
       {!reset && <div className="field"><label htmlFor="password">{t("password")}</label><input id="password" type="password" autoComplete={create ? "new-password" : "current-password"} minLength={6} value={password} onChange={e => setPassword(e.target.value)} required /></div>}
+      {create && !reset && <PasswordGenerator onUse={setPassword} />}
       {error && <p role="alert">{error}</p>}
       <button className="button" disabled={busy || !firebaseConfigured} type="submit">{busy ? t("loading") : reset ? t("resetPassword") : t(create ? "signUp" : "signIn")}</button>
       <button className="auth-link" type="button" disabled={busy} onClick={() => { setReset(!reset); setError(null); setPassword(""); }}>{reset ? t("signIn") : locale === "tr" ? "Şifremi unuttum" : "Forgot password?"}</button>
       {!reset && <button className="auth-link" type="button" disabled={busy} onClick={() => { setCreate(!create); setError(null); }}>{t(create ? "signIn" : "signUp")}</button>}
     </form>
     {!reset && <div className="provider-buttons">
-      <button className="google-sign-in" disabled={busy || !auth} type="button" onClick={() => void run("google", () => signInWithPopup(auth!, googleProvider))}><img src="/auth/google-light.png" alt="" width="40" height="40" />{t("google")}</button>
+      <button className="google-sign-in" disabled={busy || !auth} type="button" onClick={() => void run("google", () => signInWithPopup(auth!, googleProvider))}><img src="/auth/google-g.png" alt="" width="20" height="20" />{t("google")}</button>
       <button className="apple-sign-in" disabled={busy || !auth || import.meta.env.VITE_ENABLE_APPLE_SIGN_IN !== "true"} type="button" aria-label={t("apple")} aria-describedby="apple-status" onClick={() => void run("apple", () => signInWithPopup(auth!, appleProvider))}><img src={`/auth/apple-${locale}-black.png`} alt="" width="320" height="44" /></button>
       {import.meta.env.VITE_ENABLE_APPLE_SIGN_IN !== "true" && <small id="apple-status">{t("appleUnavailable")}</small>}
     </div>}

@@ -164,17 +164,37 @@ export function decryptVaultRecord(
   }
 }
 
-export function generatePassword(length = 20): string {
+export interface PasswordOptions {
+  length?: number; uppercase?: boolean; lowercase?: boolean; digits?: boolean; symbols?: boolean; excludeAmbiguous?: boolean;
+}
+export function passwordAlphabet(options: PasswordOptions = {}): { alphabet: string; classes: string[]; length: number } {
+  const length = options.length ?? 20;
   if (!Number.isInteger(length) || length < 16 || length > 128) throw new Error("Password length must be 16 through 128.");
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*_-+=";
-  const rejectionLimit = 256 - (256 % alphabet.length);
-  let result = "";
-  while (result.length < length) {
-    for (const value of randomBytes(length)) {
-      if (value < rejectionLimit && result.length < length) result += alphabet[value % alphabet.length];
-    }
+  const classes = [options.uppercase !== false ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "", options.lowercase !== false ? "abcdefghijklmnopqrstuvwxyz" : "", options.digits !== false ? "0123456789" : "", options.symbols !== false ? "!@#$%^&*_-+=?" : ""].filter(Boolean).map(value => options.excludeAmbiguous !== false ? value.replace(/[Il1O0o]/g, "") : value);
+  if (!classes.length) throw new Error("Select at least one character class.");
+  return { alphabet: classes.join(""), classes, length };
+}
+function secureIndex(bound: number): number {
+  const limit = 256 - 256 % bound;
+  let value: number;
+  do { value = randomBytes(1)[0]!; } while (value >= limit);
+  return value % bound;
+}
+export function generatePassword(input: number | PasswordOptions = {}): string {
+  const { alphabet, classes, length } = passwordAlphabet(typeof input === "number" ? {length: input} : input);
+  // Rejection over complete samples gives a uniform distribution over valid passwords.
+  // Fisher-Yates uses the same rejection sampling, without modulo or sort bias.
+  for (;;) {
+    const values = Array.from({length}, () => alphabet[secureIndex(alphabet.length)]!);
+    for (let index = length - 1; index > 0; index--) { const next = secureIndex(index + 1); [values[index],values[next]] = [values[next]!, values[index]!]; }
+    const candidate = values.join("");
+    if (classes.every(characters => [...candidate].some(value => characters.includes(value)))) return candidate;
   }
-  return result;
+}
+export function passwordEntropyUpperBound(options: PasswordOptions = {}): number {
+  const { alphabet, length } = passwordAlphabet(options);
+  // Length/alphabet upper bound, not measured entropy or a cracking-time guarantee.
+  return length * Math.log2(alphabet.length);
 }
 
 export function exactOriginMatches(savedUrl: string, pageUrl: string): boolean {

@@ -1,4 +1,5 @@
-﻿import { useEffect, useRef, useState, type FormEvent } from "react";
+import { PasswordGenerator } from "../../components/PasswordGenerator";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 import { authenticationMessage } from "@monokey/contracts";
 import { auth } from "../../app/firebase";
@@ -31,7 +32,7 @@ export function PasswordResetPage() {
     {error && <p role="alert">{error}</p>}
     {!ready && !error && !complete && <p role="status">{t("loading")}</p>}
     {complete && <p role="status">{t("saved")}</p>}
-    {ready && <form className="form" onSubmit={event => void submit(event)}><label htmlFor="new-password">{t("password")}</label><input id="new-password" type="password" autoComplete="new-password" minLength={12} required value={password} onChange={e => setPassword(e.target.value)} /><label htmlFor="confirm-password">{locale === "tr" ? "Parolayı tekrar girin" : "Confirm password"}</label><input id="confirm-password" type="password" autoComplete="new-password" minLength={12} required value={confirmation} onChange={e => setConfirmation(e.target.value)} /><button className="button" disabled={busy}>{t("save")}</button></form>}
+    {ready && <form className="form" onSubmit={event => void submit(event)}><label htmlFor="new-password">{t("password")}</label><input id="new-password" type="password" autoComplete="new-password" minLength={12} required value={password} onChange={e => setPassword(e.target.value)} /><PasswordGenerator onUse={setPassword} /><label htmlFor="confirm-password">{locale === "tr" ? "Parolayı tekrar girin" : "Confirm password"}</label><input id="confirm-password" type="password" autoComplete="new-password" minLength={12} required value={confirmation} onChange={e => setConfirmation(e.target.value)} /><button className="button" disabled={busy}>{t("save")}</button></form>}
     <a className="auth-link" href="/">{t("signIn")}</a>
   </section></main>;
 }

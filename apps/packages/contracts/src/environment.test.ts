@@ -17,3 +17,9 @@ describe("environment boundaries", () => {
     expect(parseEnvironment({ environment: "dev", apiBaseUrl: "http://192.168.1.10:5089", authEmulatorUrl: "http://192.168.1.10:9099", allowLan: true }).environment).toBe("dev");
   });
 });
+
+it("rejects example Firebase public settings and mismatched TEST app project numbers",()=>{
+ const base={environment:"test",apiBaseUrl:"https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net",firebaseProjectId:"vaultx-1ee62",firebaseAuthDomain:"vaultx-1ee62.firebaseapp.com",firebaseApiKey:"AIza"+"A".repeat(35),firebaseAppId:"1:1054617929710:web:abcdef"};
+ expect(()=>parseEnvironment({...base,firebaseApiKey:"example-api-key"})).toThrow("example values");
+ expect(()=>parseEnvironment({...base,firebaseAppId:"1:111111111:web:abcdef"})).toThrow("different project number");
+});

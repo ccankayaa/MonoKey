@@ -1,0 +1,56 @@
+name: Deploy Free marketing site
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/marketing/**
+      - .github/workflows/deploy-marketing.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: monokey-marketing
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && vars.MARKETING_DEPLOY_ENABLED == 'true'
+    environment: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-node@54337e0d02de9202d0948aaff36ad556375497b9
+        with:
+          node-version: '24'
+      - name: Verify localized source and preview output
+        working-directory: apps/marketing
+        run: node build.mjs && node --test src/*.test.mjs
+      - name: Build the authorized public marketing output
+        working-directory: apps/marketing
+        env:
+          MARKETING_INDEXABLE: ${{ vars.MARKETING_CUSTOM_DOMAIN_READY }}
+          MARKETING_HOST_ORIGIN: https://${{ vars.MARKETING_SWA_HOSTNAME }}
+        run: node build.mjs
+      - uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_MARKETING_SWA_DEPLOYMENT_TOKEN }}
+          action: upload
+          app_location: apps/marketing/dist
+          api_location: ''
+          output_location: ''
+          skip_app_build: true
+          skip_api_build: true
+          production_branch: main
+      - name: Verify served commit and localized pages
+        env:
+          MARKETING_ORIGIN: https://${{ vars.MARKETING_SWA_HOSTNAME }}
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request
+          origin=os.environ['MARKETING_ORIGIN']
+          with urllib.request.urlopen(origin+'/build-version.json',timeout=30) as response:
+              assert json.load(response)['commit']==os.environ['GITHUB_SHA']
+          for route in ['/tr/','/en/','/tr/privacy/','/en/terms/','/sitemap.xml','/robots.txt']:
+              with urllib.request.urlopen(origin+route,timeout=30) as response:
+                  assert response.status==200
+          print('Marketing commit, localized routes and HTTPS verified.')
+          PY

@@ -531,3 +531,5 @@ apps/mobile/ios/
 gha-creds-*.json
 
 .playwright-mcp/
+
+apps/mobile/.native-autofill/

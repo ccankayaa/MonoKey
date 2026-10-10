@@ -1,0 +1,1 @@
+(() => { let selected; try { selected = localStorage.getItem('monokey.marketing.theme'); } catch {} document.documentElement.dataset.theme = selected === 'light' || selected === 'dark' ? selected : matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; })();

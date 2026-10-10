@@ -26,6 +26,10 @@ jobs:
       id-token: write
       actions: read
     env:
+      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: ${{ vars.TEST_GOOGLE_WEB_CLIENT_ID }}
+      EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID: ${{ vars.TEST_GOOGLE_IOS_CLIENT_ID }}
+      MONOKEY_GOOGLE_IOS_URL_SCHEME: ${{ vars.TEST_GOOGLE_IOS_URL_SCHEME }}
+      EXPO_PUBLIC_AUTH_CONTINUE_URL: https://icy-mud-054dd8e0f.4.azurestaticapps.net/
       EXPO_NO_DOTENV: '1'
       EXPO_PUBLIC_APP_ENV: test
       EXPO_PUBLIC_API_BASE_URL: https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net
@@ -101,6 +105,10 @@ jobs:
     environment: TestMobile
     runs-on: macos-15
     env:
+      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: ${{ vars.TEST_GOOGLE_WEB_CLIENT_ID }}
+      EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID: ${{ vars.TEST_GOOGLE_IOS_CLIENT_ID }}
+      MONOKEY_GOOGLE_IOS_URL_SCHEME: ${{ vars.TEST_GOOGLE_IOS_URL_SCHEME }}
+      EXPO_PUBLIC_AUTH_CONTINUE_URL: https://icy-mud-054dd8e0f.4.azurestaticapps.net/
       EXPO_NO_DOTENV: '1'
       EXPO_PUBLIC_APP_ENV: test
       EXPO_PUBLIC_API_BASE_URL: https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net

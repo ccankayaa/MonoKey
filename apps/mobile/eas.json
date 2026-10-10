@@ -8,6 +8,9 @@
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_APP_ENV": "dev"
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "test": {
@@ -22,6 +25,13 @@
     "production": {
       "env": {
         "EXPO_PUBLIC_APP_ENV": "prod"
+      }
+    },
+    "preview": {
+      "extends": "test",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "test"
       }
     }
   }

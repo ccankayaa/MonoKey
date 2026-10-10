@@ -5,7 +5,8 @@
     "packages/*",
     "web",
     "mobile",
-    "extension"
+    "extension",
+    "marketing"
   ],
   "scripts": {
     "build": "npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto && npm run build --workspace @monokey/web && npm run build --workspace @monokey/extension",

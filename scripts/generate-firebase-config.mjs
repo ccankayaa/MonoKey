@@ -43,11 +43,11 @@ if (!/^[a-z0-9][a-z0-9-]{4,28}[a-z0-9]$/.test(projectId)) {
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' https://www.googletagmanager.com",
+  "script-src 'self' https://apis.google.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://*.google-analytics.com",
-  `connect-src 'self' https://*.googleapis.com https://securetoken.googleapis.com https://identitytoolkit.googleapis.com https://*.google-analytics.com ${apiOrigin}`,
-  `frame-src ${authOrigin}`,
+  "img-src 'self' data: https://lh3.googleusercontent.com",
+  `connect-src 'self' https://www.googleapis.com https://securetoken.googleapis.com https://identitytoolkit.googleapis.com ${authOrigin} ${apiOrigin}`,
+  `frame-src ${authOrigin} https://accounts.google.com`,
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'none'",
@@ -67,6 +67,7 @@ const config = {
           { key: "Referrer-Policy", value: "no-referrer" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },

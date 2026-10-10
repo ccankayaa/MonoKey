@@ -103,6 +103,7 @@ export interface VaultPlaintextRecord {
   favorite: boolean;
   folder?: string;
   updatedAtUtc: string;
+  nativeAutofill?: { android?: {packageName: string; certificateSha256: string} };
 }
 
 export interface ProblemDetails {
@@ -275,3 +276,6 @@ export class MonoKeyApiClient {
 export interface Membership { plan: "Free" | "Pro"; status: string; validUntilUtc: string | null; checkoutAvailable: boolean }
 export interface Plan { id: string; displayPrice: string | null; subscriptionLimit: number | null; vaultRecordLimit: number | null }
 export * from "./authentication.js";
+export * from "./brandCatalog.js";
+export * from "./nativeAutofill.js";
+export * from "./emailAction.js";

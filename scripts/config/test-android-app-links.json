@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.monokeyapp.mobile.test",
+      "sha256_cert_fingerprints": [
+        "BB:A7:5C:0D:A4:C8:25:69:53:7E:44:46:4E:E5:DF:D1:A4:9F:37:4E:BD:E9:BE:95:8A:4B:59:05:71:A5:39:40"
+      ]
+    }
+  }
+]

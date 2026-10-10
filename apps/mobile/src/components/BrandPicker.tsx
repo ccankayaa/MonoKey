@@ -1,0 +1,8 @@
+import { useState } from "react";
+import { Button, Image, Text, TextInput, View } from "react-native";
+import { findBrand, searchBrands, type Brand } from "@monokey/contracts";
+import { brandImages } from "./brandImages";
+import { useLocalization } from "../localization";
+import { useUi } from "./ui";
+export function BrandImage({name}:{name:string}) {const brand=findBrand(name),source=brand?.asset?brandImages[brand.asset.replace(".svg","")]:undefined;return source?<Image source={source} accessibilityLabel={name} style={{width:32,height:32}} resizeMode="contain" />:<Text accessibilityLabel={name}>{name.slice(0,1).toUpperCase()}</Text>;}
+export function BrandPicker({onSelect}:{onSelect:(brand:Brand)=>void}) {const {locale}=useLocalization(),ui=useUi();const [open,setOpen]=useState(false),[query,setQuery]=useState(""),[category,setCategory]=useState("");return <View><Button title={locale==="tr"?"Servis kataloğundan seç":"Choose from catalog"} onPress={()=>setOpen(!open)} />{open && <View><TextInput accessibilityLabel={locale==="tr"?"Servis ara":"Find service"} style={ui.input} value={query} onChangeText={setQuery} placeholder={locale==="tr"?"Servis ara":"Find service"} /><TextInput accessibilityLabel={locale==="tr"?"Kategori filtresi":"Category filter"} style={ui.input} value={category} onChangeText={setCategory} placeholder="video / music / banking / ai" />{searchBrands(query,category).slice(0,12).map(brand=><View key={brand.id} style={ui.row}><BrandImage name={brand.name[locale]} /><Button title={brand.name[locale]} onPress={()=>{onSelect(brand);setOpen(false);}} /></View>)}<Text style={ui.body}>{locale==="tr"?"İlk 12 sonuç; aramayı daraltın.":"First 12 matches; refine your search."}</Text></View>}</View>;}

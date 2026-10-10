@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/auth/google-sans-0.ttf) format('truetype');
+}

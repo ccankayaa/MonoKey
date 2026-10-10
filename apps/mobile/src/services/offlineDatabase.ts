@@ -1,3 +1,5 @@
+import { Platform } from "react-native";
+import { nativeAutofill } from "./nativeAutofill";
 import * as SQLite from "expo-sqlite";
 import type { EncryptedVaultRecord, Subscription, VaultKeyEnvelope } from "@monokey/contracts";
 import { environment } from "./environment";
@@ -21,6 +23,7 @@ async function database(): Promise<SQLite.SQLiteDatabase> {
 export async function cacheEnvelope(userId: string, value: VaultKeyEnvelope): Promise<void> {
   const db = await database();
   await db.runAsync("INSERT OR REPLACE INTO vault_envelope_cache (user_id, payload) VALUES (?, ?)", userId, JSON.stringify(value));
+  await exportCiphertextSnapshot(userId);
 }
 
 export async function readEnvelope(userId: string): Promise<VaultKeyEnvelope | null> {
@@ -35,6 +38,7 @@ export async function cacheVaultRecords(userId: string, values: EncryptedVaultRe
     await db.runAsync("DELETE FROM encrypted_vault_cache WHERE user_id = ?", userId);
     for (const value of values) await db.runAsync("INSERT INTO encrypted_vault_cache (user_id, record_id, payload) VALUES (?, ?, ?)", userId, value.id, JSON.stringify(value));
   });
+  await exportCiphertextSnapshot(userId);
 }
 
 export async function readVaultRecords(userId: string): Promise<EncryptedVaultRecord[]> {
@@ -59,4 +63,11 @@ export async function readSubscriptions(userId: string): Promise<Subscription[]>
 
 export async function clearAccountCache(userId: string): Promise<void> {
  const db = await database(); await db.withTransactionAsync(async () => { for (const table of ["encrypted_vault_cache", "vault_envelope_cache", "subscription_cache"]) await db.runAsync(`DELETE FROM ${table} WHERE user_id = ?`, userId); });
+}
+
+async function exportCiphertextSnapshot(userId:string):Promise<void> {
+ if(Platform.OS!=="ios" || !nativeAutofill)return;
+ const envelope=await readEnvelope(userId);if(!envelope)return;
+ const records=await readVaultRecords(userId);
+ await nativeAutofill.writeCiphertextSnapshot(JSON.stringify({version:1,namespace:environment.cacheNamespace,uid:userId,envelope,records})).catch(()=>undefined);
 }

@@ -1,3 +1,5 @@
+import { BrandPicker } from "../../components/BrandPicker";
+import { PasswordGenerator } from "../../components/PasswordGenerator";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ApiError, type EncryptedVaultRecord, type VaultKeyEnvelope, type VaultPlaintextRecord } from "@monokey/contracts";
 import {
@@ -7,7 +9,6 @@ import {
   createVault,
   decryptVaultRecord,
   encryptVaultRecord,
-  generatePassword,
   unlockWithMasterPassphrase,
   unlockWithRecoveryCode,
 } from "@monokey/crypto";
@@ -116,6 +117,7 @@ export function VaultPage() {
     const plaintext: VaultPlaintextRecord = {
       schemaVersion: 1,
       kind: "login",
+      ...(editing?.plaintext.nativeAutofill ? {nativeAutofill: editing.plaintext.nativeAutofill} : {}),
       title: form.title.trim(), username: form.username, password: form.password, url: form.url, notes: form.notes,
       favorite: form.favorite, updatedAtUtc: new Date().toISOString(),
     };
@@ -176,10 +178,10 @@ export function VaultPage() {
     }}>{t("exportVault")}</button><button className="button secondary" onClick={lock}>{t("lockVault")}</button></header>
     <div className="field"><label htmlFor="vault-search" className="sr-only">{t("search")}</label><input id="vault-search" type="search" placeholder={t("search")} value={search} onChange={event => setSearch(event.target.value)} /></div>
     <form className="card form" onSubmit={event => void saveRecord(event)} style={{ margin: "20px 0" }}>
-      <h2>{editing ? t("save") : t("createRecord")}</h2>
+      <h2>{editing ? t("save") : t("createRecord")}</h2><BrandPicker onSelect={brand=>setForm({...form,title:brand.name.tr,url:`https://${brand.domains[0]}/`})} />
       <div className="field"><label htmlFor="record-title">{t("title")}</label><input id="record-title" value={form.title} onChange={event => setForm({ ...form, title: event.target.value })} required /></div>
       <div className="field"><label htmlFor="record-username">{t("username")}</label><input id="record-username" autoComplete="off" value={form.username} onChange={event => setForm({ ...form, username: event.target.value })} /></div>
-      <div className="field"><label htmlFor="record-password">{t("password")}</label><div className="actions"><input id="record-password" style={{ flex: 1 }} type="password" autoComplete="new-password" value={form.password} onChange={event => setForm({ ...form, password: event.target.value })} /><button className="button secondary" type="button" onClick={() => setForm({ ...form, password: generatePassword() })}>{t("generate")}</button></div></div>
+      <div className="field"><label htmlFor="record-password">{t("password")}</label><div className="actions"><input id="record-password" style={{ flex: 1 }} type="password" autoComplete="new-password" value={form.password} onChange={event => setForm({ ...form, password: event.target.value })} /><PasswordGenerator onUse={value => setForm({ ...form, password: value })} /></div></div>
       <div className="field"><label htmlFor="record-url">{t("url")}</label><input id="record-url" type="url" value={form.url} onChange={event => setForm({ ...form, url: event.target.value })} /></div>
       <div className="field"><label htmlFor="record-notes">{t("notes")}</label><textarea id="record-notes" value={form.notes} onChange={event => setForm({ ...form, notes: event.target.value })} /></div>
       <label><input type="checkbox" checked={form.favorite} onChange={event => setForm({ ...form, favorite: event.target.checked })} /> {t("favorite")}</label>

@@ -1,0 +1,6 @@
+{
+  "source": "Existing MonoKey React dashboard rendered with local Auth Emulator and local API/PostgreSQL",
+  "data": "Synthetic fixture account and subscriptions; no real customer data",
+  "capturedAt": "2026-10-10",
+  "scope": "Web interface, not a native mobile screenshot"
+}
