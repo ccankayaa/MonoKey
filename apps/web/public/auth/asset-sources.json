@@ -1,0 +1,12 @@
+{
+  "google": {
+    "source": "https://developers.google.com/static/identity/images/signin-assets.zip",
+    "terms": "https://developers.google.com/identity/branding-guidelines",
+    "usage": "Unmodified pre-approved sign-in icon, used only on Google sign-in controls."
+  },
+  "apple": {
+    "source": "https://appleid.cdn-apple.com/appleid/button",
+    "terms": "https://developer.apple.com/design/human-interface-guidelines/sign-in-with-apple",
+    "usage": "Official generated localized sign-in button, used only for Apple sign-in."
+  }
+}

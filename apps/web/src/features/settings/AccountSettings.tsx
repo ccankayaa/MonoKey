@@ -1,3 +1,4 @@
+import { mayUnlinkProvider, normalizeLoginEmail } from "@monokey/contracts";
 import { useState, type FormEvent } from "react";
 import { EmailAuthProvider, GoogleAuthProvider, OAuthProvider, linkWithCredential, linkWithPopup, reauthenticateWithCredential, reauthenticateWithPopup, sendEmailVerification, sendPasswordResetEmail, unlink, updatePassword, verifyBeforeUpdateEmail } from "firebase/auth";
 import { auth } from "../../app/firebase";
@@ -26,14 +27,14 @@ export function AccountSettings() {
     else if (import.meta.env.VITE_ENABLE_APPLE_SIGN_IN === "true") await reauthenticateWithPopup(user, new OAuthProvider("apple.com"));
     else throw new Error("Provider unavailable");
   }
-  async function changeEmail(event: FormEvent): Promise<void> { event.preventDefault(); await run(async () => { await reauthenticate(); if (user) await verifyBeforeUpdateEmail(user, email); }); }
+  async function changeEmail(event: FormEvent): Promise<void> { event.preventDefault(); await run(async () => { await reauthenticate(); if (user) await verifyBeforeUpdateEmail(user, normalizeLoginEmail(email)); }); }
   async function changePassword(event: FormEvent): Promise<void> {
     event.preventDefault(); await run(async () => { await reauthenticate(); if (!user || !user.email) return;
       if (user.providerData.some(item => item.providerId === "password")) await updatePassword(user, newPassword);
-      else await linkWithCredential(user, EmailAuthProvider.credential(user.email, newPassword));
+      else { if (!user.emailVerified) throw { code: "auth/unverified-email" }; await linkWithCredential(user, EmailAuthProvider.credential(user.email, newPassword)); }
     });
   }
-  function mayUnlink(providerId: string): boolean { return Boolean(user && user.providerData.length > 1 && user.providerData.some(item => item.providerId !== providerId && (item.providerId !== "password" || user.emailVerified))); }
+  function mayUnlink(providerId: string): boolean { return Boolean(user && mayUnlinkProvider(user.providerData.map(item => item.providerId), providerId, user.emailVerified)); }
   return <section className="card form"><h2>{t("account")}</h2><form className="form" onSubmit={event => { event.preventDefault(); void run(() => saveProfile(name ?? profile.data?.displayName ?? "").unwrap()); }}><div className="field"><label htmlFor="profile-name">{t("displayName")}</label><input id="profile-name" maxLength={200} value={name ?? profile.data?.displayName ?? ""} onChange={event => setName(event.target.value)} /></div><button className="button" disabled={busy}>{t("save")}</button></form>
     <p>{user?.email}</p>{!user?.emailVerified && <button className="button secondary" disabled={busy} onClick={() => void run(async () => { if (user) await sendEmailVerification(user); })}>{t("verifyEmail")}</button>}
     <div className="field"><label htmlFor="current-login-password">{t("currentLoginPassword")}</label><input id="current-login-password" type="password" autoComplete="current-password" value={currentPassword} onChange={event => setCurrentPassword(event.target.value)} /></div>

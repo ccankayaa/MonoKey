@@ -163,3 +163,10 @@ fieldset { border: 1px solid var(--ap-color-border-default); border-radius: 12px
 
 /* Keep the SDK development warning visible without covering mobile navigation. */
 .firebase-emulator-warning { position: static !important; width: auto !important; margin: 0; }
+
+.auth-link { background:none; border:0; padding:6px 0; color:var(--accent, #8574ff); text-decoration:underline; cursor:pointer; font:inherit; font-size:.875rem; }
+.provider-buttons { display:grid; gap:12px; margin:20px 0; }
+.google-sign-in { display:flex; align-items:center; justify-content:center; background:#fff; color:#1f1f1f; border:1px solid #747775; border-radius:4px; min-height:44px; gap:10px; font:500 14px/20px system-ui; padding:0 12px 0 0; cursor:pointer; }
+.apple-sign-in { background:transparent; border:0; padding:0; cursor:pointer; }
+.apple-sign-in img { width:100%; max-width:320px; height:44px; object-fit:contain; }
+.provider-buttons button:disabled { opacity:.6; cursor:default; }

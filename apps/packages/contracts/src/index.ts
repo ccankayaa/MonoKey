@@ -274,3 +274,4 @@ export class MonoKeyApiClient {
 
 export interface Membership { plan: "Free" | "Pro"; status: string; validUntilUtc: string | null; checkoutAvailable: boolean }
 export interface Plan { id: string; displayPrice: string | null; subscriptionLimit: number | null; vaultRecordLimit: number | null }
+export * from "./authentication.js";
