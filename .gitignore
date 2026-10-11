@@ -533,3 +533,4 @@ gha-creds-*.json
 .playwright-mcp/
 
 apps/mobile/.native-autofill/
+**/.gradle/
