@@ -11,13 +11,13 @@ export default defineConfig(({mode}) => {
   return {
   plugins: [{ name: "monokey-local-brand-assets", configureServer(server) {
  server.middlewares.use((request,response,next)=>{
-  const name=request.url?.match(/^\/brands\/([a-zA-Z0-9-]+\.svg)$/)?.[1];if(!name)return next();
+  const name=request.url?.match(/^\/brands\/([a-zA-Z0-9-]+\.(?:svg|png))$/)?.[1];if(!name)return next();
   const directory=resolve(import.meta.dirname,"../packages/contracts/assets/brands");if(!readdirSync(directory).includes(name))return next();
-  response.setHeader("Content-Type","image/svg+xml");response.end(readAsset(resolve(directory,name)));
+  response.setHeader("Content-Type",name.endsWith(".svg")?"image/svg+xml":"image/png");response.end(readAsset(resolve(directory,name)));
  });
 }, generateBundle() {
  const directory=resolve(import.meta.dirname,"../packages/contracts/assets/brands");
- for(const name of readdirSync(directory).filter(value=>value.endsWith(".svg"))) this.emitFile({type:"asset",fileName:`brands/${name}`,source:readAsset(resolve(directory,name))});
+ for(const name of readdirSync(directory).filter(value=>/\.(?:svg|png)$/u.test(value))) this.emitFile({type:"asset",fileName:`brands/${name}`,source:readAsset(resolve(directory,name))});
 }}, { name: "monokey-manifest", generateBundle() {
     const manifest = { manifest_version: 3, name: local ? "Mono Key (dev)" : `Mono Key (${environment.environment})`, version: "0.1.0", description: "User-triggered exact-origin encrypted credential filling.",
       permissions: ["activeTab","scripting","storage","idle"], host_permissions: [`${environment.apiBaseUrl}/*`, "https://identitytoolkit.googleapis.com/*", "https://securetoken.googleapis.com/*", ...(environment.authEmulatorUrl ? [`${environment.authEmulatorUrl}/*`] : [])],

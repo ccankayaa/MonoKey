@@ -3,6 +3,10 @@ import { AppState, Platform } from "react-native";
 import { requireOptionalNativeModule } from "expo";
 import type { NativeAutofillRequest } from "@monokey/contracts";
 interface NativeAutofill {
+ setActiveAccount(uid:string|null):Promise<void>;
+ pendingSavedRecords():Promise<import("@monokey/contracts").EncryptedVaultRecord[]>;
+ acknowledgeSavedRecord(id:string):Promise<void>;
+ registerCredentialIdentities(payload:string):Promise<void>;
  clearActionIntent():Promise<void>;
  copy(value:string):Promise<void>;
  pendingRequest():Promise<NativeAutofillRequest|null>;

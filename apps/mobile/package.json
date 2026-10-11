@@ -10,7 +10,8 @@
     "build": "expo export --clear --platform android --output-dir dist/android && expo export --clear --platform ios --output-dir dist/ios",
     "typecheck": "tsc --noEmit",
     "test": "vitest run src",
-    "ios:credential-bundle": "node ../../scripts/Build-MonoKeyCredentialExtension.mjs"
+    "ios:credential-bundle": "node ../../scripts/Build-MonoKeyCredentialExtension.mjs",
+    "eas-build-post-install": "node ../../scripts/Prepare-MonoKeyEasBuild.mjs"
   },
   "dependencies": {
     "@monokey/contracts": "0.1.0",

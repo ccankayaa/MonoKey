@@ -12,13 +12,13 @@ export default defineConfig(({mode}) => {
   return {
   plugins: [{name:"monokey-platform-email-links",generateBundle(){this.emitFile({type:"asset",fileName:".well-known/assetlinks.json",source:environment.environment==="test"?readFileSync(resolve(import.meta.dirname,"../../scripts/config/test-android-app-links.json"),"utf-8"):"[]"});}}, { name: "monokey-local-brand-assets", configureServer(server) {
  server.middlewares.use((request,response,next)=>{
-  const name=request.url?.match(/^\/brands\/([a-zA-Z0-9-]+\.svg)$/)?.[1];if(!name)return next();
+  const name=request.url?.match(/^\/brands\/([a-zA-Z0-9-]+\.(?:svg|png))$/)?.[1];if(!name)return next();
   const directory=resolve(import.meta.dirname,"../packages/contracts/assets/brands");if(!readdirSync(directory).includes(name))return next();
-  response.setHeader("Content-Type","image/svg+xml");response.end(readAsset(resolve(directory,name)));
+  response.setHeader("Content-Type",name.endsWith(".svg")?"image/svg+xml":"image/png");response.end(readAsset(resolve(directory,name)));
  });
 }, generateBundle() {
  const directory=resolve(import.meta.dirname,"../packages/contracts/assets/brands");
- for(const name of readdirSync(directory).filter(value=>value.endsWith(".svg"))) this.emitFile({type:"asset",fileName:`brands/${name}`,source:readAsset(resolve(directory,name))});
+ for(const name of readdirSync(directory).filter(value=>/\.(?:svg|png)$/u.test(value))) this.emitFile({type:"asset",fileName:`brands/${name}`,source:readAsset(resolve(directory,name))});
 }}, react(), { name: "monokey-hosting-headers", generateBundle() {
     if (environment.environment === "prod") {
       const config = JSON.parse(readFileSync(resolve(import.meta.dirname, "public/staticwebapp.config.json"), "utf-8"));

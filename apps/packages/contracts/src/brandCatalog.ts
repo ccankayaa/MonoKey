@@ -1,4 +1,4 @@
-export interface Brand { id: string; name: {tr: string; en: string}; category: string; aliases: string[]; domains: string[]; asset: string | null; color: string | null; assetNotes: { [key: string]: unknown }; domainSource: string }
+export interface Brand { tileBackground?: string; id: string; name: {tr: string; en: string}; category: string; aliases: string[]; domains: string[]; asset: string | null; color: string | null; assetNotes: { [key: string]: unknown }; domainSource: string }
 export const brandCatalog: readonly Brand[] = [
   {
     "id": "amazon",
@@ -11,13 +11,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "amazon.com"
     ],
-    "asset": null,
+    "asset": "amazon.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://amazon.com"
+      "source": "https://www.amazon.com/favicon.ico",
+      "sha256": "a42e0f0f27b02c64ec149302a59907a90b42e71b15baa900578748f1795279ca",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://amazon.com"
+    "domainSource": "https://amazon.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "amazon-prime",
@@ -30,13 +34,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "primevideo.com"
     ],
-    "asset": null,
+    "asset": "amazon-prime.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://primevideo.com"
+      "source": "https://www.primevideo.com/apple-touch-icon.png",
+      "sha256": "8348b4415e38d9344cd1b3ff582e34bbd02aa5ec0ac1f2a5439ad89d936eabfa",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://primevideo.com"
+    "domainSource": "https://primevideo.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "netflix",
@@ -58,7 +66,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://brand.netflix.com/en/assets/logos",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://netflix.com"
+    "domainSource": "https://netflix.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "hbo-max",
@@ -82,7 +91,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://hbomax.com"
+    "domainSource": "https://hbomax.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "youtube-premium",
@@ -104,7 +114,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://www.youtube.com/howyoutubeworks/resources/brand-resources/#logos-icons-and-colors",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://youtube.com"
+    "domainSource": "https://youtube.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "youtube",
@@ -126,7 +137,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://www.youtube.com/howyoutubeworks/resources/brand-resources/#logos-icons-and-colors",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://youtube.com"
+    "domainSource": "https://youtube.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "google-account",
@@ -150,7 +162,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://about.google/brand-resource-center/brand-elements/",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://accounts.google.com"
+    "domainSource": "https://accounts.google.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "apple-account",
@@ -174,7 +187,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://account.apple.com"
+    "domainSource": "https://account.apple.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "icloud",
@@ -196,7 +210,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://icloud.com"
+    "domainSource": "https://icloud.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "gmail",
@@ -218,7 +233,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://mail.google.com"
+    "domainSource": "https://mail.google.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "outlook",
@@ -231,13 +247,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "outlook.live.com"
     ],
-    "asset": null,
+    "asset": "outlook.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://outlook.live.com"
+      "source": "https://res.public.onecdn.static.microsoft/assets/mail/pwa/v4/pngs/apple-touch-icon.png",
+      "sha256": "2d4abee01d85232cb80629835c5be15285e4698da7dccff7ddf94811261fdda5",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://outlook.live.com"
+    "domainSource": "https://outlook.live.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "yahoo",
@@ -250,13 +270,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "yahoo.com"
     ],
-    "asset": null,
+    "asset": "yahoo.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://yahoo.com"
+      "source": "https://s.yimg.com/cv/apiv2/icons/yahoo.png",
+      "sha256": "528a272085d9733149e123df5484bbc7e1a522418cf57da16a5b0a29fa1e0b9d",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://yahoo.com"
+    "domainSource": "https://yahoo.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "edevlet",
@@ -271,13 +295,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "turkiye.gov.tr"
     ],
-    "asset": null,
+    "asset": "edevlet.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://turkiye.gov.tr"
+      "source": "https://cdn.e-devlet.gov.tr/themes/izmir/images/favicons/favicon-196x196.1.8.0.png",
+      "sha256": "084c73167f11b86b1113325f2c0683bf9f48d4b08a9be6369264fbddf0f8b1a5",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://turkiye.gov.tr"
+    "domainSource": "https://turkiye.gov.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "mhrs",
@@ -290,13 +318,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "mhrs.gov.tr"
     ],
-    "asset": null,
+    "asset": "mhrs.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://mhrs.gov.tr"
+      "source": "https://mhrs.gov.tr/img/apple-touch-icon.png",
+      "sha256": "8a7bf7fbbb799f31001bd1197c87e01eb4225a4257b4ee282fbc8e78316c66f9",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://mhrs.gov.tr"
+    "domainSource": "https://mhrs.gov.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "enabiz",
@@ -311,13 +343,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "enabiz.gov.tr"
     ],
-    "asset": null,
+    "asset": "enabiz.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://enabiz.gov.tr"
+      "source": "https://enabiz.gov.tr/assets/favicon/favicon-16x16.png?v=yX3I6hjj0an5pdAInO_u7wmF80Ro798vQge0cC8O18k",
+      "sha256": "1021aca24ff03b6bead135b0bf700ceba085a66d6408c8db864f20449d044e1b",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://enabiz.gov.tr"
+    "domainSource": "https://enabiz.gov.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "hepsiburada",
@@ -330,13 +366,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "hepsiburada.com"
     ],
-    "asset": null,
+    "asset": "hepsiburada.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://hepsiburada.com"
+      "source": "https://www.hepsiburada.com/favicon.ico",
+      "sha256": "6ad416aefccd07e8b8170b2856cd26c64c458163620bf700ef1369bcdc0efb70",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://hepsiburada.com"
+    "domainSource": "https://hepsiburada.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "trendyol",
@@ -349,13 +389,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "trendyol.com"
     ],
-    "asset": null,
+    "asset": "trendyol.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://trendyol.com"
+      "source": "https://www.trendyol.com/favicon.ico",
+      "sha256": "8e07359102580dc2c8f6146d4bca05c9747508bf50f8ff1739d3439b003e97d6",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://trendyol.com"
+    "domainSource": "https://trendyol.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "instagram",
@@ -377,7 +421,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://about.meta.com/brand/resources/instagram",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://instagram.com"
+    "domainSource": "https://instagram.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "facebook",
@@ -399,7 +444,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://about.meta.com/brand/resources/facebook/logo",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://facebook.com"
+    "domainSource": "https://facebook.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "spotify",
@@ -421,7 +467,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://developer.spotify.com/documentation/general/design-and-branding/#using-our-logo",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://spotify.com"
+    "domainSource": "https://spotify.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "apple-music",
@@ -443,7 +490,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://music.apple.com"
+    "domainSource": "https://music.apple.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "fizy",
@@ -456,13 +504,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "fizy.com"
     ],
-    "asset": null,
+    "asset": "fizy.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://fizy.com"
+      "source": "https://fizy.com/landing/apple-icon.png?apple-icon.3rcjkg9xavq2a.png",
+      "sha256": "c898ea63dec2dbfa5d98267ad298d2884b9ec13374cd29a4b738861ab2bd58a0",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://fizy.com"
+    "domainSource": "https://fizy.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "turkcell",
@@ -475,13 +527,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "turkcell.com.tr"
     ],
-    "asset": null,
+    "asset": "turkcell.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://turkcell.com.tr"
+      "source": "https://ffo3gv1cf3ir.merlincdn.net/static_lib/assetsv2/common/images/favicon.ico?20261011_03-111700",
+      "sha256": "23731792ba56fe87afb9ce1c45ce56bc42087f35e1ecc35c37747e7e665f6011",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://turkcell.com.tr"
+    "domainSource": "https://turkcell.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "vodafone",
@@ -503,7 +559,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://vodafone.com.tr"
+    "domainSource": "https://vodafone.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "turk-telekom",
@@ -518,13 +575,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "turktelekom.com.tr"
     ],
-    "asset": null,
+    "asset": "turk-telekom.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://turktelekom.com.tr"
+      "source": "https://asset.turktelekom.com.tr/SiteAssets/images/favicon.ico",
+      "sha256": "d8a2fb2bc5285c83da8a1c0462035b1431ac1aa7c6696377c1f8b903d7b04b19",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://turktelekom.com.tr"
+    "domainSource": "https://turktelekom.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "superonline",
@@ -537,13 +598,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "superonline.net"
     ],
-    "asset": null,
+    "asset": "superonline.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://superonline.net"
+      "source": "https://s.superonline.net/SiteAssets/img/favicon.png?v=20261011_04",
+      "sha256": "24411b2a4d24b2985c943958f3b9074e536453449df6e3d6059975e9c1463042",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://superonline.net"
+    "domainSource": "https://superonline.net",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "gain",
@@ -556,13 +621,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "gain.tv"
     ],
-    "asset": null,
+    "asset": "gain.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://gain.tv"
+      "source": "https://gain.tv/apple-touch-icon.png",
+      "sha256": "4e7a42f299f2c06d295ba61a61c7ca7243b34cfe290af66af3896cd94a9026e0",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://gain.tv"
+    "domainSource": "https://gain.tv",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "exxen",
@@ -577,13 +646,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "exxen.com"
     ],
-    "asset": null,
+    "asset": "exxen.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://exxen.com"
+      "source": "https://www.exxen.com/favicon.ico",
+      "sha256": "de6a48dfb7d5f996413a15e9289c238c841c24245b8465bb63440a0521f5cd96",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://exxen.com"
+    "domainSource": "https://exxen.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "bein-connect",
@@ -596,13 +669,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "beinconnect.com.tr"
     ],
-    "asset": null,
+    "asset": "bein-connect.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://beinconnect.com.tr"
+      "source": "https://www.beinconnect.com.tr/apple-touch-icon.png",
+      "sha256": "80fbdc204dc292194a85e7a0ef42583804639b6ff2a15bdb38202e2e52fc45a0",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://beinconnect.com.tr"
+    "domainSource": "https://beinconnect.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "tod",
@@ -615,13 +692,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "todtv.com.tr"
     ],
-    "asset": null,
+    "asset": "tod.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://todtv.com.tr"
+      "source": "https://www.todtv.com.tr/apple-touch-icon.png",
+      "sha256": "826bdf277239a8f2c6f9f41b83de746e76e5ab82f470b077cd39e2ea3a9c0ce1",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://todtv.com.tr"
+    "domainSource": "https://todtv.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "sahibinden",
@@ -634,13 +715,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "sahibinden.com"
     ],
-    "asset": null,
+    "asset": "sahibinden.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://sahibinden.com"
+      "source": "https://www.sahibinden.com/favicon.ico",
+      "sha256": "254692f6ba6328f585392ed185b3207d252bdcd5c84a3a14a54f6410efe35f53",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://sahibinden.com"
+    "domainSource": "https://sahibinden.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "migros",
@@ -653,13 +738,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "migros.com.tr"
     ],
-    "asset": null,
+    "asset": "migros.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://migros.com.tr"
+      "source": "https://www.migros.com.tr:443/assets/images/seo/new/apple-touch-icon-precomposed.png",
+      "sha256": "f1fdda5b9f3f643480f06af6d0e673c92df7f6fbebb9b388294ff857c59acf07",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://migros.com.tr"
+    "domainSource": "https://migros.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "halkbank",
@@ -672,13 +761,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "halkbank.com.tr"
     ],
-    "asset": null,
+    "asset": "halkbank.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://halkbank.com.tr"
+      "source": "https://www.halkbank.com.tr/etc.clientlibs/corporate-website/clientlibs/clientlib-site/resources/images/touch-icons/halkbank-180x180.png",
+      "sha256": "b97eb2a4b59a620bbd1fdd62770fdcd781d56e5d0cf036ef7e5d17c9b1916b3e",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://halkbank.com.tr"
+    "domainSource": "https://halkbank.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "ziraat",
@@ -693,13 +786,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "ziraatbank.com.tr"
     ],
-    "asset": null,
+    "asset": "ziraat.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://ziraatbank.com.tr"
+      "source": "https://www.ziraatbank.com.tr/SiteAssets/images/favicon.ico",
+      "sha256": "8dd394cff59321f170d77adaf10c15d5c70a8bd19e13e9b097aa1bf6b4f44abc",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://ziraatbank.com.tr"
+    "domainSource": "https://ziraatbank.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "bankkart",
@@ -712,13 +809,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "bankkart.com.tr"
     ],
-    "asset": null,
+    "asset": "bankkart.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://bankkart.com.tr"
+      "source": "https://www.bankkart.com.tr/favicon.ico",
+      "sha256": "13b36fe0cd5544657495063f4aad539ece90e117517b0f5d5ca4937304a17a9e",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://bankkart.com.tr"
+    "domainSource": "https://bankkart.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "chatgpt",
@@ -763,7 +864,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://gemini.google.com"
+    "domainSource": "https://gemini.google.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "grok",
@@ -776,13 +878,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "grok.com"
     ],
-    "asset": null,
+    "asset": "grok.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://grok.com"
+      "source": "https://grok.com/images/android-chrome-512x512.png",
+      "sha256": "8c8cccf41bbd5242e4fce0f4206909b227a88a13e639775561ba6b4c89697121",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://grok.com"
+    "domainSource": "https://grok.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "claude",
@@ -804,7 +910,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://claude.ai"
+    "domainSource": "https://claude.ai",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "getir",
@@ -836,13 +943,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "yemeksepeti.com"
     ],
-    "asset": null,
+    "asset": "yemeksepeti.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://yemeksepeti.com"
+      "source": "https://micro-assets.foodora.com/favicons/ys/apple-touch-icon-180x180.png",
+      "sha256": "320984bf6efcd27942722a27708025630128997af37f4667fe9e9fb262a38b25",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://yemeksepeti.com"
+    "domainSource": "https://yemeksepeti.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "mobile-legends",
@@ -885,7 +996,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://shazam.com"
+    "domainSource": "https://shazam.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "arabam",
@@ -898,13 +1010,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "arabam.com"
     ],
-    "asset": null,
+    "asset": "arabam.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://arabam.com"
+      "source": "https://www.arabam.com/arabam-favicon-144x144.png",
+      "sha256": "7eaa8c3ce82a45254f319c46de5a90cfb3cbb553569732d59c0f2e9bc85dea70",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://arabam.com"
+    "domainSource": "https://arabam.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "zoom",
@@ -928,7 +1044,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://brand.zoom.us/usage-legal/",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://zoom.com"
+    "domainSource": "https://zoom.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "kariyer",
@@ -941,13 +1058,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "kariyer.net"
     ],
-    "asset": null,
+    "asset": "kariyer.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://kariyer.net"
+      "source": "https://img-kariyer.mncdn.com/Images/favicon_new.png",
+      "sha256": "72a016e2d2cd9a7d81ff87b5ae242323bb37e9ab980a09173a811c98ef60c0c7",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://kariyer.net"
+    "domainSource": "https://kariyer.net",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "linkedin",
@@ -960,13 +1081,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "linkedin.com"
     ],
-    "asset": null,
+    "asset": "linkedin.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://linkedin.com"
+      "source": "https://static.licdn.com/sc/h/eahiplrwoq61f4uan012ia17i",
+      "sha256": "a5658ffdd2cc3ce2a9e07e2fa1fe32079b33ccd94ff2099dd6b8debbf697e3de",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Service identification only. Owner trademarks/copyright retained; no endorsement or general redistribution license asserted."
     },
-    "domainSource": "https://linkedin.com"
+    "domainSource": "https://linkedin.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "reddit",
@@ -988,7 +1113,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://www.redditinc.com/brand",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://reddit.com"
+    "domainSource": "https://reddit.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "okcupid",
@@ -1010,7 +1136,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://okcupid.com"
+    "domainSource": "https://okcupid.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "tinder",
@@ -1032,7 +1159,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://tinder.com"
+    "domainSource": "https://tinder.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "bionluk",
@@ -1045,13 +1173,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "bionluk.com"
     ],
-    "asset": null,
+    "asset": "bionluk.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://bionluk.com"
+      "source": "https://gcdn.bionluk.com/site/icon/faviconsv2/apple-icon-180x180.png",
+      "sha256": "c64eacbc9c0bb95b7e0b6c8573dc58dfc8237a4a503eb9e1c7d58fbe95c398b2",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://bionluk.com"
+    "domainSource": "https://bionluk.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "dropbox",
@@ -1073,7 +1205,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://dropbox.com"
+    "domainSource": "https://dropbox.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "telegram",
@@ -1095,7 +1228,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://telegram.org"
+    "domainSource": "https://telegram.org",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "whatsapp",
@@ -1117,7 +1251,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://about.meta.com/brand/resources/whatsapp/whatsapp-brand",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://whatsapp.com"
+    "domainSource": "https://whatsapp.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "is-bankasi",
@@ -1133,13 +1268,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "isbank.com.tr"
     ],
-    "asset": null,
+    "asset": "is-bankasi.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://isbank.com.tr"
+      "source": "https://www.isbank.com.tr/StaticFiles/Isbank/images/icons/favicon.ico",
+      "sha256": "7744ed9c8e722f2c54438da755202d534f764e82d6a9b06801b00bce39778946",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://isbank.com.tr"
+    "domainSource": "https://isbank.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "akbank",
@@ -1152,13 +1291,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "akbank.com"
     ],
-    "asset": null,
+    "asset": "akbank.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://akbank.com"
+      "source": "https://www.akbank.com/SiteAssets/img/favicon.ico",
+      "sha256": "1c419ecae3b7369c13f8d32b34d6d8496ddc996dfef0ece8174248fc9bc5f1fa",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://akbank.com"
+    "domainSource": "https://akbank.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "garanti-bbva",
@@ -1173,13 +1316,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "garantibbva.com.tr"
     ],
-    "asset": null,
+    "asset": "garanti-bbva.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://garantibbva.com.tr"
+      "source": "https://www.garantibbva.com.tr/apple-touch-icon-180x180.png",
+      "sha256": "3b35b07343e05c13bce3d9cfbe349f4b0bb0f8fbb689ed2cd0fa53822884e75e",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://garantibbva.com.tr"
+    "domainSource": "https://garantibbva.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "yapi-kredi",
@@ -1192,13 +1339,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "yapikredi.com.tr"
     ],
-    "asset": null,
+    "asset": "yapi-kredi.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://yapikredi.com.tr"
+      "source": "https://www.yapikredi.com.tr/favicon.ico",
+      "sha256": "3395ff6b09ee74ba021e7c86ed774f9232dca2a50244d4f5b961677c5763676e",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://yapikredi.com.tr"
+    "domainSource": "https://yapikredi.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "vakifbank",
@@ -1211,13 +1362,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "vakifbank.com.tr"
     ],
-    "asset": null,
+    "asset": "vakifbank.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://vakifbank.com.tr"
+      "source": "https://www.vakifbank.com.tr/Templates/Default/assets/img/favicon.ico",
+      "sha256": "bf91f13e9fe1b756fa072b09d27604f93576f408ae105baf364e63681cba6743",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://vakifbank.com.tr"
+    "domainSource": "https://vakifbank.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "qnb",
@@ -1233,13 +1388,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "qnb.com.tr"
     ],
-    "asset": null,
+    "asset": "qnb.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://qnb.com.tr"
+      "source": "https://www.qnb.com.tr/_assets/img/finansbank.gif",
+      "sha256": "0654d0bd23425977501a27908410305ee589041e55aa1f0a545b7559a0135182",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://qnb.com.tr"
+    "domainSource": "https://qnb.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "denizbank",
@@ -1271,13 +1430,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "enpara.com"
     ],
-    "asset": null,
+    "asset": "enpara.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://enpara.com"
+      "source": "https://www.enpara.com/favicon.ico",
+      "sha256": "e8eed8a588261ac7a55476df581c2e8145e0525a9b21b58bdba4977af486e65c",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://enpara.com"
+    "domainSource": "https://enpara.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "kuveyt-turk",
@@ -1290,13 +1453,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "kuveytturk.com.tr"
     ],
-    "asset": null,
+    "asset": "kuveyt-turk.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://kuveytturk.com.tr"
+      "source": "https://www.kuveytturk.com.tr/_assets/img/icon/icon-180x180.png",
+      "sha256": "352f9d26e81559ee25f10b704be7c016f9ab8e9524be8c4536aab8b9a5656df5",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://kuveytturk.com.tr"
+    "domainSource": "https://kuveytturk.com.tr",
+    "tileBackground": "#1f2937"
   },
   {
     "id": "turkiye-finans",
@@ -1309,13 +1476,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "turkiyefinans.com.tr"
     ],
-    "asset": null,
+    "asset": "turkiye-finans.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://turkiyefinans.com.tr"
+      "source": "https://www.turkiyefinans.com.tr/SiteAssets/favicon.ico?v=2",
+      "sha256": "90a00e2bd67ad7056f9038ca2a17ec14cdb53509256f141512da661ce383a689",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Service identification only. Owner trademarks/copyright retained; no endorsement or general redistribution license asserted."
     },
-    "domainSource": "https://turkiyefinans.com.tr"
+    "domainSource": "https://turkiyefinans.com.tr",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "steam",
@@ -1337,7 +1508,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://partner.steamgames.com/doc/marketing/branding",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://store.steampowered.com"
+    "domainSource": "https://store.steampowered.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "epic-games",
@@ -1359,7 +1531,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://dev.epicgames.com/docs/services/en-US/EpicAccountServices/DesignGuidelines/index.html#epicgamesbrandguidelines",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://epicgames.com"
+    "domainSource": "https://epicgames.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "riot-games",
@@ -1381,7 +1554,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://riotgames.com"
+    "domainSource": "https://riotgames.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "playstation",
@@ -1403,7 +1577,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://playstation.com"
+    "domainSource": "https://playstation.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "xbox",
@@ -1416,13 +1591,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "xbox.com"
     ],
-    "asset": null,
+    "asset": "xbox.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://xbox.com"
+      "source": "https://www.xbox.com/favicon-512.png",
+      "sha256": "b7fa5ae38427843f7cea3c7175276beca9a32291bdc50d32d55cbce36167c6c0",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://xbox.com"
+    "domainSource": "https://xbox.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "minecraft",
@@ -1435,13 +1614,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "minecraft.net"
     ],
-    "asset": null,
+    "asset": "minecraft.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://minecraft.net"
+      "source": "https://www.minecraft.net/etc.clientlibs/minecraftnet/clientlibs/clientlib-site/resources/apple-icon-180x180.png",
+      "sha256": "00dbaf34eb85e8bcedcbbb1420df2f45a3e59e63b66a553cab1096f46b24d603",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://minecraft.net"
+    "domainSource": "https://minecraft.net",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "roblox",
@@ -1463,7 +1646,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://en.help.roblox.com/hc/en-us/articles/115001708126-Roblox-Name-and-Logo-Community-Usage-Guidelines",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://roblox.com"
+    "domainSource": "https://roblox.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "discord",
@@ -1485,7 +1669,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://discord.com/branding",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://discord.com"
+    "domainSource": "https://discord.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "canva",
@@ -1498,13 +1683,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "canva.com"
     ],
-    "asset": null,
+    "asset": "canva.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://canva.com"
+      "source": "https://static.canva.com/static/images/favicon.ico",
+      "sha256": "2bba6f6189f58949b52a7a90bd332c9f1216d5fe0abf7b202759b9b3d504640f",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://canva.com"
+    "domainSource": "https://canva.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "notion",
@@ -1526,7 +1715,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://notion.so"
+    "domainSource": "https://notion.so",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "github",
@@ -1548,7 +1738,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://github.com/logos",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://github.com"
+    "domainSource": "https://github.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "adobe",
@@ -1561,13 +1752,17 @@ export const brandCatalog: readonly Brand[] = [
     "domains": [
       "adobe.com"
     ],
-    "asset": null,
+    "asset": "adobe.png",
     "color": null,
     "assetNotes": {
-      "reason": "No reviewed redistributable asset available; neutral text fallback.",
-      "source": "https://adobe.com"
+      "source": "https://www.adobe.com/favicon.ico",
+      "sha256": "75c6458ef968c90e7d09591224d796b07bcd2359278d8cae7fcba150a2fb8345",
+      "checkedAt": "2026-10-11",
+      "type": "Official site identity asset",
+      "usage": "Identifies a user-selected service. Trademark and copyright remain with the owner; no endorsement or general redistribution license asserted. Replace or remove if the owner disallows this use."
     },
-    "domainSource": "https://adobe.com"
+    "domainSource": "https://adobe.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "blu-tv",
@@ -1591,7 +1786,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://hbomax.com"
+    "domainSource": "https://hbomax.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "mubi",
@@ -1613,7 +1809,8 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": null,
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://mubi.com"
+    "domainSource": "https://mubi.com",
+    "tileBackground": "#ffffff"
   },
   {
     "id": "deezer",
@@ -1635,10 +1832,11 @@ export const brandCatalog: readonly Brand[] = [
       "guidelines": "https://deezerbrand.com/document/37#/-/logo",
       "notice": "Brand trademarks remain with their owners. Identification only; no endorsement."
     },
-    "domainSource": "https://deezer.com"
+    "domainSource": "https://deezer.com",
+    "tileBackground": "#ffffff"
   }
 ];
 
-function normalize(value: string): string { return value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("en").replaceAll("ı", "i"); }
+function normalize(value: string): string { return value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("en").replaceAll("Ä±", "i"); }
 export function searchBrands(query: string, category?: string): readonly Brand[] { const search=normalize(query); return brandCatalog.filter(brand => (!category || brand.category===category) && normalize([brand.name.tr,brand.name.en,...brand.aliases,...brand.domains].join(" ")).includes(search)); }
 export function findBrand(name: string): Brand | undefined { const key=normalize(name.trim()); return brandCatalog.find(brand => [brand.id,brand.name.tr,brand.name.en,...brand.aliases].some(value=>normalize(value)===key)); }

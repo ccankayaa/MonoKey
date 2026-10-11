@@ -30,7 +30,7 @@ function AppContent() {
   const [user, setUser] = useState<User | null>(auth.currentUser); const [ready, setReady] = useState(false); const [tab, setTab] = useState<Tab>("overview");
   const previous = useRef<string | null>(null);
   const { t } = useLocalization();
-  useEffect(() => onAuthStateChanged(auth, value => { if (previous.current && previous.current !== value?.uid) void clearAccountCache(previous.current); if(!value)void nativeAutofill?.clearCiphertextSnapshot?.().catch(()=>undefined); previous.current = value?.uid ?? null; setUser(value); setReady(true); }), []);
+  useEffect(() => onAuthStateChanged(auth, value => { if (previous.current && previous.current !== value?.uid) void clearAccountCache(previous.current); void nativeAutofill?.setActiveAccount?.(value?.uid ?? null).catch(()=>undefined); previous.current = value?.uid ?? null; setUser(value); setReady(true); }), []);
   useEffect(() => { void (async () => { if (!await SecureStore.getItemAsync("vaultx.device-id")) await SecureStore.setItemAsync("vaultx.device-id", crypto.randomUUID()); })(); }, []);
   if(emailAction)return <SafeAreaProvider><EmailActionScreen action={emailAction} onClose={()=>setEmailAction(null)} /></SafeAreaProvider>;
   if (!ready) return null;

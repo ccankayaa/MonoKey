@@ -2,5 +2,5 @@ import { findBrand } from "@monokey/contracts";
 export function serviceManagementUrl(name: string): string | null { const service=findBrand(name); return service?.domains[0] ? `https://${service.domains[0]}/` : null; }
 export function ServiceLogo({ name }: { name: string }) {
  const service=findBrand(name);
- return <span className="service-logo custom" aria-label={service?.name.en ?? name}>{service?.asset ? <img loading="lazy" src={`/brands/${service.asset}`} alt="" /> : <span aria-hidden="true">{name.charAt(0).toUpperCase() || "◇"}</span>}</span>;
+ return <span className="service-logo custom" style={service?.asset ? {background:service.tileBackground ?? "#ffffff",border:"1px solid #d1d5db"} : undefined} aria-label={service?.name.en ?? name}>{service?.asset ? <img loading="lazy" src={`/brands/${service.asset}`} alt="" /> : <span aria-hidden="true">{name.charAt(0).toUpperCase() || "◇"}</span>}</span>;
 }

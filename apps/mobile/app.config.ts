@@ -7,13 +7,17 @@ parseEnvironment({ environment: variant, apiBaseUrl: process.env.EXPO_PUBLIC_API
   firebaseProjectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID, firebaseApiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   firebaseAppId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID, firebaseAuthDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
   authEmulatorUrl: process.env.EXPO_PUBLIC_AUTH_EMULATOR_URL, allowLan: process.env.EXPO_PUBLIC_ALLOW_LAN === "true" });
+const testflight=process.env.MONOKEY_IOS_TESTFLIGHT === "true";
+if(testflight && variant!=="test")throw new Error("TestFlight must select the TEST backend explicitly.");
+const iosBundle=testflight?"com.monokeyapp.app":process.env.MONOKEY_IOS_BUNDLE_ID || (variant==="test"?"com.monokeyapp.mobile.test":"com.vaultx.app");
 const config: ExpoConfig = {
-  name: variant === "prod" ? "Mono Key" : `Mono Key (${variant})`, slug: "monokey", version: variant === "test" ? "0.1.1" : "0.1.0", userInterfaceStyle: "automatic",
+  name: variant === "prod" ? "Mono Key" : `Mono Key (${variant})`, slug: "monokey", version: testflight ? "0.1.2" : variant === "test" ? "0.1.1" : "0.1.0", userInterfaceStyle: "automatic",
   scheme: variant === "prod" ? "monokey" : `monokey-${variant}`,
   // Preserve registered IDs. Supply distinct registered test IDs before native distribution.
-  ios: { supportsTablet: true, ...(variant === "test" ? {buildNumber:"3"} : {}), bundleIdentifier: process.env.MONOKEY_IOS_BUNDLE_ID || (variant === "test" ? "com.monokeyapp.mobile.test" : "com.vaultx.app"), usesAppleSignIn: process.env.EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN === "true" },
+  ios: { supportsTablet: true, ...(variant === "test" ? {buildNumber:testflight?"4":"3"} : {}), bundleIdentifier: iosBundle, ...(testflight ? {appleTeamId:"Q4KKGWHFMS",infoPlist:{ITSAppUsesNonExemptEncryption:true}} : {}), usesAppleSignIn: process.env.EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN === "true" },
   android: { ...(variant === "test" ? {versionCode:3} : {}), package: process.env.MONOKEY_ANDROID_PACKAGE || (variant === "test" ? "com.monokeyapp.mobile.test" : "com.vaultx.app"),
     intentFilters: variant === "test" ? [{action:"VIEW",autoVerify:true,data:[{scheme:"https",host:"icy-mud-054dd8e0f.4.azurestaticapps.net",pathPrefix:"/auth/"},{scheme:"https",host:"test.my.monokeyapp.com",pathPrefix:"/auth/"}],category:["BROWSABLE","DEFAULT"]}] : [] },
+  extra: {eas:{...(process.env.MONOKEY_EAS_PROJECT_ID ? {projectId:process.env.MONOKEY_EAS_PROJECT_ID} : {}),build:{experimental:{ios:{appExtensions:process.env.MONOKEY_IOS_AUTOFILL_EXTENSION==="false"?[]:[{targetName:"MonoKeyCredentialProvider",bundleIdentifier:iosBundle+".credentials",entitlements:{"com.apple.security.application-groups":["group."+iosBundle+".autofill"],"keychain-access-groups":["$(AppIdentifierPrefix)"+iosBundle+".autofill"],"com.apple.developer.authentication-services.autofill-credential-provider":true}}]}}}}},
   plugins: ["expo-secure-store", "expo-sqlite", "./plugins/withMonoKeyAutofill.cjs", ...(process.env.EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN === "true" ? ["expo-apple-authentication"] : []), ...(process.env.MONOKEY_GOOGLE_IOS_URL_SCHEME ? [["@react-native-google-signin/google-signin", {iosUrlScheme: process.env.MONOKEY_GOOGLE_IOS_URL_SCHEME}] as [string, {iosUrlScheme: string}]] : [])],
 };
 export default config;

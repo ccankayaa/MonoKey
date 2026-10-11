@@ -34,6 +34,39 @@
       "env": {
         "EXPO_PUBLIC_APP_ENV": "test"
       }
+    },
+    "testflight": {
+      "distribution": "store",
+      "developmentClient": false,
+      "environment": "preview",
+      "ios": {
+        "image": "auto"
+      },
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "test",
+        "EXPO_NO_DOTENV": "1",
+        "MONOKEY_IOS_TESTFLIGHT": "true",
+        "MONOKEY_IOS_BUNDLE_ID": "com.monokeyapp.app",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:1054617929710:ios:f41aa2b46d12859d45f0ff",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "1054617929710-oee7cpm3dsc4md5iut6t97v3kj4a5fk6.apps.googleusercontent.com",
+        "MONOKEY_GOOGLE_IOS_URL_SCHEME": "com.googleusercontent.apps.1054617929710-oee7cpm3dsc4md5iut6t97v3kj4a5fk6",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "1054617929710-m80fp03gs8j91hi4647th1gotp4s6tj5.apps.googleusercontent.com",
+        "EXPO_PUBLIC_AUTH_CONTINUE_URL": "https://test.my.monokeyapp.com/",
+        "MONOKEY_APPLE_TEAM_ID": "Q4KKGWHFMS",
+        "MONOKEY_IOS_AUTOFILL_DEVICE_TEST": "true",
+        "EXPO_PUBLIC_API_BASE_URL": "https://monokey-e9ahh8hpfqdah7em.ukwest-01.azurewebsites.net",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "vaultx-1ee62",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "vaultx-1ee62.firebaseapp.com",
+        "EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN": "true"
+      }
+    }
+  },
+  "submit": {
+    "testflight": {
+      "ios": {
+        "ascAppId": "6821585442",
+        "appleTeamId": "Q4KKGWHFMS"
+      }
     }
   }
 }

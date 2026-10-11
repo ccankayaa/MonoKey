@@ -1,3 +1,4 @@
+import { importProviderSaves, publishProviderIdentities } from "../services/iosCredentialSync";
 import { PasswordGenerator } from "../components/PasswordGenerator";
 import { BrandPicker, BrandImage } from "../components/BrandPicker";
 import { useEffect, useRef, useState } from "react";
@@ -36,7 +37,16 @@ export function VaultScreen() { const ui = useUi();
   const [error, setError] = useState("");
 
   useEffect(() => { void (async () => { try { const remote = await api.getVaultKeyEnvelope(); setEnvelope(remote); await cacheEnvelope(user.uid, remote); } catch (caught) { if (!(caught instanceof ApiError)) setEnvelope(await readEnvelope(user.uid)); else if (caught.status !== 404) setError(t("unlockFailed")); } })(); }, [user.uid]);
-  async function load(nextKey: Uint8Array): Promise<void> { const cached = await readVaultRecords(user.uid); let encrypted: EncryptedVaultRecord[]; try { encrypted = mergeEncryptedRecords(cached, (await api.listVaultRecords()).items); await cacheVaultRecords(user.uid, encrypted); } catch (caught) { if (caught instanceof ApiError) throw caught; encrypted = cached; } if (!session.isCurrent(nextKey)) return; setRecords(encrypted.filter(item => !item.isDeleted).map(item => ({ encrypted: item, plaintext: decryptVaultRecord(nextKey, user.uid, item) }))); }
+  async function load(nextKey: Uint8Array): Promise<void> {
+    const pending=await importProviderSaves(user.uid,nextKey);
+    const cached=await readVaultRecords(user.uid);let encrypted:EncryptedVaultRecord[];
+    try {encrypted=mergeEncryptedRecords(cached,(await api.listVaultRecords()).items);await cacheVaultRecords(user.uid,encrypted);}
+    catch(caught){if(caught instanceof ApiError)throw caught;encrypted=cached;}
+    encrypted=[...encrypted,...pending.filter(record=>!encrypted.some(value=>value.id===record.id))];
+    if(!session.isCurrent(nextKey))return;
+    const visible=encrypted.filter(item=>!item.isDeleted).map(item=>({encrypted:item,plaintext:decryptVaultRecord(nextKey,user.uid,item)}));
+    setRecords(visible);await publishProviderIdentities(visible).catch(()=>undefined);
+  }
   async function unlock(): Promise<void> { if (!envelope) return; try { const next = useRecovery ? unlockWithRecoveryCode(recoveryInput.trim(), user.uid, envelope) : unlockWithMasterPassphrase(passphrase, user.uid, envelope); setKey(next); setPassphrase(""); setRecoveryInput(""); setError(""); await load(next); } catch { setError(t("unlockFailed")); } }
   async function completeSetup(): Promise<void> { if (!pending || !confirmed) return; const saved = await api.putVaultKeyEnvelope(pending.envelope); await cacheEnvelope(user.uid, saved); if (!mounted.current || pendingRef.current !== pending) return; setEnvelope(saved); setKey(pending.vaultKey); pendingRef.current = null; setPending(null); }
   async function saveRecord(): Promise<void> {
@@ -54,14 +64,14 @@ export function VaultScreen() { const ui = useUi();
     }
     const next = [...records.filter(item => item.encrypted.id !== id), { encrypted: saved, plaintext }];
     if (!key || !session.isCurrent(key)) return;
-    setRecords(next); await cacheVaultRecords(user.uid, next.map(item => item.encrypted)); setTitle(""); setPassword(""); setUsername(""); setUrl(""); setNotes(""); setFavorite(false); setEditing(null);
+    setRecords(next); await cacheVaultRecords(user.uid, next.map(item => item.encrypted)); await publishProviderIdentities(next).catch(()=>undefined); setTitle(""); setPassword(""); setUsername(""); setUrl(""); setNotes(""); setFavorite(false); setEditing(null);
   }
   async function removeRecord(item: VisibleRecord): Promise<void> {
     if (item.encrypted.revision === undefined) return;
     const tombstone = await api.deleteVaultRecord(item.encrypted.id, item.encrypted.revision);
     const next = records.filter(value => value.encrypted.id !== item.encrypted.id);
     if (!key || !session.isCurrent(key)) return;
-    setRecords(next); await cacheVaultRecords(user.uid, [...next.map(value => value.encrypted), tombstone]);
+    setRecords(next); await cacheVaultRecords(user.uid, [...next.map(value => value.encrypted), tombstone]); await publishProviderIdentities(next).catch(()=>undefined);
   }
 
   if (pending) return <Screen><Text style={ui.title}>{t("recoveryCode")}</Text><Text style={ui.error}>{t("recoveryWarning")}</Text><Text selectable style={ui.body}>{pending.recoveryCode}</Text><View style={ui.row}><Switch value={confirmed} onValueChange={setConfirmed} /><Text style={ui.body}>{t("recoveryConfirmed")}</Text></View><Button title={t("completeSetup")} disabled={!confirmed} onPress={() => void completeSetup().catch(() => setError(t("saveFailed")))} /></Screen>;
@@ -74,6 +84,6 @@ export function VaultScreen() { const ui = useUi();
     <View style={ui.card}><Text style={ui.heading}>{t("changeMaster")}</Text><TextInput accessibilityLabel={t("masterPassphrase")} style={ui.input} secureTextEntry value={passphrase} onChangeText={setPassphrase} /><Button title={t("edit")} disabled={passphrase.length < 12} onPress={() => { const updated = rewrapMasterPassphrase(key, passphrase, user.uid, envelope); void api.putVaultKeyEnvelope(updated).then(saved => { setEnvelope(saved); setPassphrase(""); return cacheEnvelope(user.uid, saved); }).catch(() => setError(t("saveFailed"))); }} /></View>
     <Button title={t("exportVault")} onPress={() => void Share.share({message: JSON.stringify(records.map(item => item.plaintext))}).catch(() => setError(t("saveFailed")))} />
     {error ? <Text accessibilityLiveRegion="polite" style={ui.error}>{error}</Text> : null}
-    {records.filter(item => `${item.plaintext.title} ${item.plaintext.username ?? ""}`.toLocaleLowerCase().includes(search.toLocaleLowerCase())).map(item => <View key={item.encrypted.id} style={ui.card}><BrandImage name={item.plaintext.title} /><Text style={ui.heading}>{item.plaintext.title}</Text><Text selectable style={ui.body}>{revealedId === item.encrypted.id ? item.plaintext.password : t("sessionOnly")}</Text><View style={ui.row}><Button title={revealedId === item.encrypted.id ? "••••" : t("password")} onPress={() => setRevealedId(revealedId === item.encrypted.id ? null : item.encrypted.id)} /><Button title={t("edit")} onPress={() => { setEditing(item); setTitle(item.plaintext.title); setPassword(item.plaintext.password ?? ""); setUsername(item.plaintext.username ?? ""); setUrl(item.plaintext.url ?? ""); setNotes(item.plaintext.notes ?? ""); setFavorite(item.plaintext.favorite); }} /><Button title={t("delete")} color="#B42318" onPress={() => Alert.alert("MonoKey", t("deleteConfirm"), [{ text: t("cancel"), style: "cancel" }, { text: t("delete"), style: "destructive", onPress: () => void removeRecord(item).catch(() => setError(t("saveFailed"))) }])} /></View></View>)}
+    {records.filter(item => `${item.plaintext.title} ${item.plaintext.username ?? ""}`.toLocaleLowerCase().includes(search.toLocaleLowerCase())).map(item => <View key={item.encrypted.id} style={ui.card}><BrandImage name={item.plaintext.title} /><Text style={ui.heading}>{item.plaintext.title}</Text><Text selectable style={ui.body}>{revealedId === item.encrypted.id ? item.plaintext.password : t("sessionOnly")}</Text><View style={ui.row}><Button title={revealedId === item.encrypted.id ? "ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢" : t("password")} onPress={() => setRevealedId(revealedId === item.encrypted.id ? null : item.encrypted.id)} /><Button title={t("edit")} onPress={() => { setEditing(item); setTitle(item.plaintext.title); setPassword(item.plaintext.password ?? ""); setUsername(item.plaintext.username ?? ""); setUrl(item.plaintext.url ?? ""); setNotes(item.plaintext.notes ?? ""); setFavorite(item.plaintext.favorite); }} /><Button title={t("delete")} color="#B42318" onPress={() => Alert.alert("MonoKey", t("deleteConfirm"), [{ text: t("cancel"), style: "cancel" }, { text: t("delete"), style: "destructive", onPress: () => void removeRecord(item).catch(() => setError(t("saveFailed"))) }])} /></View></View>)}
   </Screen>;
 }

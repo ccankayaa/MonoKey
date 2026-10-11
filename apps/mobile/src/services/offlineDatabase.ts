@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import { auth } from "./firebase";
 import { nativeAutofill } from "./nativeAutofill";
 import * as SQLite from "expo-sqlite";
 import type { EncryptedVaultRecord, Subscription, VaultKeyEnvelope } from "@monokey/contracts";
@@ -66,8 +67,9 @@ export async function clearAccountCache(userId: string): Promise<void> {
 }
 
 async function exportCiphertextSnapshot(userId:string):Promise<void> {
- if(Platform.OS!=="ios" || !nativeAutofill)return;
+ if(Platform.OS!=="ios" || !nativeAutofill || auth.currentUser?.uid!==userId)return;
  const envelope=await readEnvelope(userId);if(!envelope)return;
  const records=await readVaultRecords(userId);
+ if(auth.currentUser?.uid!==userId)return;
  await nativeAutofill.writeCiphertextSnapshot(JSON.stringify({version:1,namespace:environment.cacheNamespace,uid:userId,envelope,records})).catch(()=>undefined);
 }
