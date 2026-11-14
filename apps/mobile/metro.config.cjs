@@ -10,7 +10,6 @@ config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
 ];
-config.resolver.unstable_enableSymlinks = true;
 config.resolver.extraNodeModules = {
   "@monokey/contracts": path.resolve(workspaceRoot, "packages/contracts"),
   "@monokey/crypto": path.resolve(workspaceRoot, "packages/crypto"),
