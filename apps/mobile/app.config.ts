@@ -14,7 +14,10 @@ const config: ExpoConfig = {
   name: variant === "prod" ? "Mono Key" : `Mono Key (${variant})`, slug: "monokey", version: testflight ? "0.1.2" : variant === "test" ? "0.1.1" : "0.1.0", userInterfaceStyle: "automatic",
   scheme: variant === "prod" ? "monokey" : `monokey-${variant}`,
   // Preserve registered IDs. Supply distinct registered test IDs before native distribution.
-  ios: { supportsTablet: true, ...(variant === "test" ? {buildNumber:testflight?"4":"3"} : {}), bundleIdentifier: iosBundle, ...(testflight ? {appleTeamId:"Q4KKGWHFMS",infoPlist:{ITSAppUsesNonExemptEncryption:true}} : {}), usesAppleSignIn: process.env.EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN === "true" },
+  // Owner's Apple questionnaire: published standard crypto, internal TEST only,
+  // no France distribution; Apple determined no export documents are required.
+  // This flag describes export documentation, not the vault's encryption.
+  ios: { supportsTablet: true, ...(variant === "test" ? {buildNumber:testflight?"4":"3"} : {}), bundleIdentifier: iosBundle, ...(testflight ? {appleTeamId:"Q4KKGWHFMS",infoPlist:{ITSAppUsesNonExemptEncryption:false}} : {}), usesAppleSignIn: process.env.EXPO_PUBLIC_ENABLE_APPLE_SIGN_IN === "true" },
   android: { ...(variant === "test" ? {versionCode:3} : {}), package: process.env.MONOKEY_ANDROID_PACKAGE || (variant === "test" ? "com.monokeyapp.mobile.test" : "com.vaultx.app"),
     intentFilters: variant === "test" ? [{action:"VIEW",autoVerify:true,data:[{scheme:"https",host:"icy-mud-054dd8e0f.4.azurestaticapps.net",pathPrefix:"/auth/"},{scheme:"https",host:"test.my.monokeyapp.com",pathPrefix:"/auth/"}],category:["BROWSABLE","DEFAULT"]}] : [] },
   extra: {eas:{projectId:process.env.MONOKEY_EAS_PROJECT_ID || "e6bf9ea9-27ad-40c3-a5b5-17fd08ab0a58",build:{experimental:{ios:{appExtensions:process.env.MONOKEY_IOS_AUTOFILL_EXTENSION==="false"?[]:[{targetName:"MonoKeyCredentialProvider",bundleIdentifier:iosBundle+".credentials",entitlements:{"com.apple.security.application-groups":["group."+iosBundle+".autofill"],"keychain-access-groups":["$(AppIdentifierPrefix)"+iosBundle+".autofill"],"com.apple.developer.authentication-services.autofill-credential-provider":true}}]}}}}},
