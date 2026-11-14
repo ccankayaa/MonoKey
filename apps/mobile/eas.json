@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">=16.28.0"
+    "version": ">=16.28.0",
+    "appVersionSource": "local"
   },
   "build": {
     "development": {
@@ -37,6 +38,7 @@
     },
     "testflight": {
       "distribution": "store",
+      "node": "24.11.1",
       "developmentClient": false,
       "environment": "preview",
       "ios": {
