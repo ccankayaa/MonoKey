@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.dependency 'ExpoModulesCore'
   s.source_files = '**/*.{h,m,mm,swift}'
-  s.swift_version = '5.9'
+  s.swift_version = '5.0'
 end

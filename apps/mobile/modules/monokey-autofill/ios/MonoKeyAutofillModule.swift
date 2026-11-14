@@ -1,5 +1,6 @@
 import ExpoModulesCore
-import UIKit\nimport AuthenticationServices
+import UIKit
+import AuthenticationServices
 
 public class MonoKeyAutofillModule: Module {
   private func snapshotURL() throws -> URL {
@@ -48,7 +49,8 @@ public class MonoKeyAutofillModule: Module {
       let envelopeFields=Set(["formatVersion","kdfAlgorithm","kdfMemoryKiB","kdfIterations","kdfParallelism","salt","encryptionAlgorithm","masterWrapNonce","masterWrappedKey","recoveryWrapNonce","recoveryWrappedKey","expectedRevision","revision","createdAtUtc","updatedAtUtc"])
       let recordFields=Set(["id","formatVersion","encryptionAlgorithm","nonce","ciphertext","revision","expectedRevision","isDeleted","createdAtUtc","updatedAtUtc"])
       guard Set(envelope.keys).isSubset(of:envelopeFields), records.allSatisfy({ Set($0.keys).isSubset(of:recordFields) && $0["formatVersion"] as? Int == 1 && $0["encryptionAlgorithm"] as? String == "xchacha20-poly1305" }) else { throw NSError(domain:"MonoKeyAutofill",code:3) }
-      guard uid==SharedVaultStore.activeUser(),records.count<=5000 else {throw SharedVaultStore.failure()}\n      try data.write(to:self.snapshotURL(), options:[.atomic,.completeFileProtection])
+      guard uid==SharedVaultStore.activeUser(),records.count<=5000 else {throw SharedVaultStore.failure()}
+      try data.write(to:self.snapshotURL(), options:[.atomic,.completeFileProtection])
     }
     AsyncFunction("clearCiphertextSnapshot") { () -> Void in
       try SharedVaultStore.setActiveUser(nil)
