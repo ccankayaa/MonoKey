@@ -9,6 +9,7 @@
     "marketing"
   ],
   "scripts": {
+    "postinstall": "node ../scripts/Prepare-MonoKeyEasBuild.mjs",
     "build": "npm run build --workspace @monokey/contracts && npm run build --workspace @monokey/crypto && npm run build --workspace @monokey/web && npm run build --workspace @monokey/extension",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
