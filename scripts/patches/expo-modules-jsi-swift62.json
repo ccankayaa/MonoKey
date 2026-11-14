@@ -16,5 +16,11 @@
       "before": null,
       "after": "9fd6243dafadce81688bc40845812265ce97a429f3120068bfe817181e64f766"
     }
+  },
+  "upstreamFixedVersion": "57.1.3",
+  "upstreamFixedFiles": {
+    "apple/Sources/ExpoModulesJSI-Cxx/include/RuntimeScheduler.h": "208241aeccd17dbcf40aa572a551effc6cb76f2a1025ed6e6ecbb278744c6c1c",
+    "apple/Sources/ExpoModulesJSI/Runtime/JavaScriptRuntime.swift": "cd81ae49e471a4c7932a4a5cd110484c4cb3d1c388e79bb8c2c4ca343ef2d8e9",
+    "apple/Sources/ExpoModulesJSI/Utilities/UncheckedSendable.swift": "9fd6243dafadce81688bc40845812265ce97a429f3120068bfe817181e64f766"
   }
 }
